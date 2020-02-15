@@ -89,8 +89,8 @@ DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
          'NAME': 'geomap_db',
-         'USER': '',
-         'PASSWORD': '',
+         'USER': 'testuser',
+         'PASSWORD': 'testuser',
          'HOST': '127.0.0.1',
          'PORT': '',
     },
