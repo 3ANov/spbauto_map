@@ -162,6 +162,3 @@ GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
 
 GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
