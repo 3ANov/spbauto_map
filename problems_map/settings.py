@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -161,5 +161,3 @@ LEAFLET_CONFIG = {
 GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
 
 GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
-
-DATABASES['default'] = dj_database_url.config(conn_max_age=500, ssl_require=True)
