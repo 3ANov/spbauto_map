@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'copyright',
     'accounts',
     'sitesettings',
-    #'map',
+    'map',
     'crispy_forms',
     'django_registration',
     'colorfield',
