@@ -1,0 +1,46 @@
+{% extends 'map/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extrahead %}
+{% load leaflet_tags %}
+   {% leaflet_js plugins="forms" %}
+   {% leaflet_css plugins="forms" %}
+   <link rel="stylesheet" type="text/css" href="{% static 'css/report.css' %}" />
+      <script type="text/javascript">
+      var dataurl = '{% url "data" %}';
+
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map; 
+
+
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {               
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties;                
+                var content = `<h3>${feature.id}</h3><h3>${props.name}</h3><p>${props.description}</p>`;
+                layer.bindPopup(content);
+            }}).addTo(map);
+          });
+      });
+    </script>
+<meta charset="utf-8">
+{% endblock extrahead %}
+
+{% block content %}   
+<div class="row">
+  <div class="col">
+    <form method="post">
+       {% csrf_token %}
+       {{ form|crispy }}
+       <button type="submit" class="btn btn-dark btn-block">Отправить</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

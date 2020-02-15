@@ -1,0 +1,87 @@
+{% extends 'map/base.html' %}
+{% load static %}
+
+{% block extrahead %}
+<title>{{ sitesettings.title }} | Главная</title>
+
+{% load leaflet_tags %}
+    {% leaflet_js %}
+    {% leaflet_css %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
+    <script type="text/javascript">
+      
+        
+    
+
+
+
+
+
+      var dataurl = '{% url "data" %}';
+
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        //map.setView(new L.LatLng(59.95, 30.19), 10);  
+         
+        
+
+
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, { 
+              style: function (feature) {
+                return {color: feature.properties.color};
+              },             
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties;                    
+                var content = `<p><strong>Номер проблемы:</strong> ${feature.id}</p>                              
+                              <p><strong>Описание проблемы:</strong> ${props.description}</p>
+                              <p><strong>Дата:</strong>${ props.date_format }</p> 
+                              
+                              <p><strong>Статус:</strong>${props.status_name}</p>`;
+                layer.bindPopup(content);
+                 
+            }}).addTo(map);          
+          });
+      });
+
+    
+    </script>
+<meta charset="utf-8">
+{% endblock extrahead %}
+
+
+{% block content %}
+{% if not user.is_authenticated %}
+<div class="row mb-2">
+  <div class="col-sm-6 mx-auto text-center">
+    Хотите сообщить о проблеме? <a  href="{% url 'login' %}">Авторизуйтесь</a> или <a href="{% url 'django_registration_register' %}">зарегистрируйтесь</a>.
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-sm-4 mx-auto text-center">
+    <a class="btn btn-info  btn-block" href="{% url 'report' %}" role="button">Список проблем</a>
+  </div>
+</div>
+{% else %}
+<div class="row mb-3">
+  <div class="col-sm-4 mx-auto p-2 text-center">
+  <a class="btn btn-danger  btn-block" href="{% url 'report' %}" role="button">Сообщить о проблеме</a>
+</div>
+<div class="col-sm-4 mx-auto p-2 text-center">
+  <a class="btn btn-info  btn-block" href="{% url 'report' %}" role="button">Список проблем</a>
+</div>
+</div>
+{% endif %}
+<div class="row">
+  <div class="col">
+  {% leaflet_map "main" %}
+  </div>
+</div>
+
+{% endblock %}
