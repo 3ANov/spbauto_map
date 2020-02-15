@@ -25,7 +25,7 @@ SECRET_KEY = '1ta*6&62p3bz)_l@*a6@&pwikh4*yt$nfo@yp-y$#k@shkrjxf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', '.herokuapp.com']
 
 
 # Application definition
@@ -90,8 +90,8 @@ DATABASES = {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
          'NAME': 'geomap_db',
          'USER': 'testuser',
-         'PASSWORD': 'testuser',
-         'HOST': 'localhost',
+         'PASSWORD': '',
+         'HOST': '127.0.0.1',
          'PORT': '',
     },
 }
@@ -157,3 +157,11 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 18,
     'RESET_VIEW': False
 }
+
+GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
