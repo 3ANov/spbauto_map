@@ -10,7 +10,7 @@ urlpatterns = [
     path('password-reset/', views.PasswordResetViewCustom.as_view(), name='password_reset'),
     path('password-reset/done/', views.PasswordResetDoneViewCustom.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmViewCustom.as_view(), name='password_reset_confirm'),
-    #path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('reset/done/', views.PasswordResetCompleteViewCustom.as_view(), name='password_reset_complete'),
 
     path('register/',
          RegistrationViewCustom.as_view(success_url='/'),
