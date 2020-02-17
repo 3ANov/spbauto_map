@@ -1,5 +1,5 @@
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, \
-    PasswordResetDoneView
+    PasswordResetDoneView, PasswordResetCompleteView
 from django.shortcuts import render
 
 # Create your views here.
@@ -34,6 +34,11 @@ class PasswordResetConfirmViewCustom(PasswordResetConfirmView):
 
 class PasswordResetDoneViewCustom(PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'
+    sitesettings = SiteSettings.load()
+    extra_context = {'sitesettings': sitesettings}
+
+class PasswordResetCompleteViewCustom(PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
     sitesettings = SiteSettings.load()
     extra_context = {'sitesettings': sitesettings}
 
