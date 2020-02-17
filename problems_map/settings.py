@@ -140,12 +140,19 @@ LOGIN_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'info@google.ru'
+
+
+from urllib3 import request
+import json
+req = request.urlopen("https://mailtrap.io/api/v1/inboxes.json?api_token=<MAILTRAP_API_TOKEN>")
+response_body = req.read()
+credentials = json.loads(response_body)[0]
+
+EMAIL_HOST = credentials['domain']
+EMAIL_HOST_USER = credentials['username']
+EMAIL_HOST_PASSWORD = credentials['password']
+EMAIL_PORT = credentials['smtp_ports'][0]
+EMAIL_USE_TLS = True
 
 
 #AUTH_USER_MODEL = 'accounts.MyUser'
