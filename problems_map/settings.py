@@ -143,7 +143,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 from urllib3 import request
-r = request.get("https://mailtrap.io/api/v1/inboxes.json?api_token=<MAILTRAP_API_TOKEN>")
+r = request("https://mailtrap.io/api/v1/inboxes.json?api_token=<MAILTRAP_API_TOKEN>")
 credentials = r.json()[0]
 
 EMAIL_HOST = credentials['domain']
