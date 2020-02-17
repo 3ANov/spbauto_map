@@ -141,7 +141,7 @@ LOGIN_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
-
+'''
 from urllib3 import request
 r = request("https://mailtrap.io/api/v1/inboxes.json?api_token=<MAILTRAP_API_TOKEN>")
 credentials = r.json()[0]
@@ -151,7 +151,7 @@ EMAIL_HOST_USER = credentials['username']
 EMAIL_HOST_PASSWORD = credentials['password']
 EMAIL_PORT = credentials['smtp_ports'][0]
 EMAIL_USE_TLS = True
-
+'''
 
 #AUTH_USER_MODEL = 'accounts.MyUser'
 
