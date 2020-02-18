@@ -9,16 +9,62 @@
     {% leaflet_css %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
+    <script type="text/javascript" src="{% static 'js/leaflet.ajax.min.js' %}"></script>
+
     <script type="text/javascript">
+{% comment %}
+       var style = {
+        "clickable": true,
+        "color": "#00D",
+        "fillColor": "#00D",
+        "weight": 1.0,
+        "opacity": 0.3,
+        "fillOpacity": 0.2
+    };
+    var hoverStyle = {
+        "fillOpacity": 0.5
+    };
+
+
+    var geojsonURL = 'http://127.0.0.1:8000/data/{z}/{x}/{y}.geojson';
+
+    var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
+            clipTiles: true,
+            unique: function (feature) { 
+                return feature.id;
+            }
+        }, {
+            style: style,
+            onEachFeature: function (feature, layer) {
+                if (feature.properties) {
+                    var popupString = '<div class="popup">';
+                    for (var k in feature.properties) {
+                        var v = feature.properties[k];
+                        popupString += k + ': ' + v + '<br />';
+                    }
+                    popupString += '</div>';
+                    layer.bindPopup(popupString);
+                }
+                if (!(layer instanceof L.Point)) {
+                    layer.on('mouseover', function () {
+                        layer.setStyle(hoverStyle);
+                    });
+                    layer.on('mouseout', function () {
+                        layer.setStyle(style);
+                    });
+                }
+            }
+        }
+    );
+    map.addLayer(geojsonTileLayer);
+
       
         
-    
+    {% endcomment %}
 
+{% comment %}
 
-
-
-
-      var dataurl = '{% url "data" %}';
+     var dataurl = '{% url "data" %}';
 
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
@@ -49,6 +95,22 @@
             }}).addTo(map);          
           });
       });
+{% endcomment %}
+
+
+
+
+
+function our_layers(map,options){
+  var datasets = new L.GeoJSON.AJAX('{% url "data" %}',{
+
+  });
+  datasets.addTo(map);
+}
+
+
+
+
 
     
     </script>
@@ -80,7 +142,7 @@
 {% endif %}
 <div class="row">
   <div class="col-10 mx-auto">
-  {% leaflet_map "main" %}
+  {% leaflet_map "main" callback="window.our_layers"%}
   </div>
 </div>
 
