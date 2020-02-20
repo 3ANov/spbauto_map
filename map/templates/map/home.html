@@ -103,6 +103,17 @@
 
 function our_layers(map,options){
   var datasets = new L.GeoJSON.AJAX('{% url "data" %}',{
+    onEachFeature: function onEachFeature(feature, layer) {
+      var props = feature.properties;                    
+                var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
+                              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
+                            
+                              <p><strong>Дата:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
+                              
+                              <p><strong>Статус:</strong>${props.status_name}</p>`;
+                layer.bindPopup(content);
+
+    }
 
   });
   datasets.addTo(map);
