@@ -58,6 +58,7 @@
 
 {% endcomment %}
 
+
         
       
       var dataurl = '{% url "data" %}';
@@ -75,7 +76,12 @@
             L.geoJson(data, {               
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties;                
-                var content = `<h3>${feature.id}</h3><h3>${props.name}</h3><p>${props.description}</p>`;
+                var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
+                              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
+                            
+                              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
+                              
+                              <p><strong>Статус:</strong>${props.status_name}</p>`;
                 layer.bindPopup(content);
             }}).addTo(map);
           });

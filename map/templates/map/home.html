@@ -9,9 +9,9 @@
     {% leaflet_css %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
-    <script type="text/javascript" src="{% static 'js/leaflet.ajax.min.js' %}"></script>
 
     <script type="text/javascript">
+
 {% comment %}
        var style = {
         "clickable": true,
@@ -62,7 +62,7 @@
         
     {% endcomment %}
 
-{% comment %}
+
 
      var dataurl = '{% url "data" %}';
 
@@ -85,9 +85,10 @@
               },             
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties;                    
-                var content = `<p><strong>Номер проблемы:</strong> ${feature.id}</p>                              
-                              <p><strong>Описание проблемы:</strong> ${props.description}</p>
-                              <p><strong>Дата:</strong>${ props.date_format }</p> 
+                var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
+                              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
+                            
+                              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
                               
                               <p><strong>Статус:</strong>${props.status_name}</p>`;
                 layer.bindPopup(content);
@@ -95,11 +96,10 @@
             }}).addTo(map);          
           });
       });
-{% endcomment %}
 
 
 
-
+{% comment %}
 
 function our_layers(map,options){
   var datasets = new L.GeoJSON.AJAX('{% url "data" %}',{
@@ -108,7 +108,7 @@ function our_layers(map,options){
                 var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
                               <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
                             
-                              <p><strong>Дата:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
+                              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
                               
                               <p><strong>Статус:</strong>${props.status_name}</p>`;
                 layer.bindPopup(content);
@@ -119,6 +119,7 @@ function our_layers(map,options){
   datasets.addTo(map);
 }
 
+{% endcomment %}
 
 
 
@@ -153,7 +154,7 @@ function our_layers(map,options){
 {% endif %}
 <div class="row">
   <div class="col-10 mx-auto">
-  {% leaflet_map "main" callback="window.our_layers"%}
+  {% leaflet_map "main" %}
   </div>
 </div>
 
