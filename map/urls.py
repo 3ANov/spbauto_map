@@ -14,5 +14,6 @@ urlpatterns = [
     path('report', views.problem_report, name='report'),
     path('accounts/', include('accounts.urls')),
     path('problems_set', views.problems_dataset, name='data'),
+    #path('data.geojson', GeoJSONLayerView.as_view(model=ProblemLabel), name='data'),
 
 ]
