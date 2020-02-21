@@ -5,127 +5,146 @@
 <title>{{ sitesettings.title }} | Главная</title>
 
 {% load leaflet_tags %}
-    {% leaflet_js %}
-    {% leaflet_css %}
+{% leaflet_js %}
+{% leaflet_css %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-{% comment %}
-       var style = {
-        "clickable": true,
-        "color": "#00D",
-        "fillColor": "#00D",
-        "weight": 1.0,
-        "opacity": 0.3,
-        "fillOpacity": 0.2
-    };
-    var hoverStyle = {
-        "fillOpacity": 0.5
-    };
+  {% comment %}
+  var style = {
+    "clickable": true,
+    "color": "#00D",
+    "fillColor": "#00D",
+    "weight": 1.0,
+    "opacity": 0.3,
+    "fillOpacity": 0.2
+  };
+  var hoverStyle = {
+    "fillOpacity": 0.5
+  };
 
 
-    var geojsonURL = 'http://127.0.0.1:8000/data/{z}/{x}/{y}.geojson';
+  var geojsonURL = 'http://127.0.0.1:8000/data/{z}/{x}/{y}.geojson';
 
-    var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
-            clipTiles: true,
-            unique: function (feature) { 
-                return feature.id;
-            }
-        }, {
-            style: style,
-            onEachFeature: function (feature, layer) {
-                if (feature.properties) {
-                    var popupString = '<div class="popup">';
-                    for (var k in feature.properties) {
-                        var v = feature.properties[k];
-                        popupString += k + ': ' + v + '<br />';
-                    }
-                    popupString += '</div>';
-                    layer.bindPopup(popupString);
-                }
-                if (!(layer instanceof L.Point)) {
-                    layer.on('mouseover', function () {
-                        layer.setStyle(hoverStyle);
-                    });
-                    layer.on('mouseout', function () {
-                        layer.setStyle(style);
-                    });
-                }
-            }
+  var geojsonTileLayer = new L.TileLayer.GeoJSON(geojsonURL, {
+    clipTiles: true,
+    unique: function (feature) { 
+      return feature.id;
+    }
+  }, {
+    style: style,
+    onEachFeature: function (feature, layer) {
+      if (feature.properties) {
+        var popupString = '<div class="popup">';
+        for (var k in feature.properties) {
+          var v = feature.properties[k];
+          popupString += k + ': ' + v + '<br />';
         }
-    );
-    map.addLayer(geojsonTileLayer);
+        popupString += '</div>';
+        layer.bindPopup(popupString);
+      }
+      if (!(layer instanceof L.Point)) {
+        layer.on('mouseover', function () {
+          layer.setStyle(hoverStyle);
+        });
+        layer.on('mouseout', function () {
+          layer.setStyle(style);
+        });
+      }
+    }
+  }
+  );
+  map.addLayer(geojsonTileLayer);
 
-      
-        
-    {% endcomment %}
 
 
+  {% endcomment %}
 
-     var dataurl = '{% url "data" %}';
 
-      window.addEventListener("map:init", function (event) {
-        var map = event.detail.map;
+  var status_set;
+  var problem_dataurl = '{% url "problems_data" %}';
+  var status_dataurl = '{% url "status_data" %}';
+
+  window.addEventListener("map:init", function (event) {
+    var map = event.detail.map;
         //map.setView(new L.LatLng(59.95, 30.19), 10);  
+
+
+       status_set = fetch(status_dataurl)
+        .then(function(resp) {
+          return resp.json();
+        })
+        .then(function(data) {
          
-        
+            //var arr = jQuery.grep(data , function (element, index) { return element.pk == 1; });
+            //console.log(arr[0]['fields']['name']);
+            return data;
+          });
+        console.log(status_set);
+       var arr = jQuery.grep(status_set , function (element, index) { return element.pk == 1; });
+        console.log(arr);
 
 
         // Download GeoJSON data with Ajax
-        fetch(dataurl)
-          .then(function(resp) {
-            return resp.json();
-          })
-          .then(function(data) {
-            L.geoJson(data, { 
-              style: function (feature) {
-                return {color: feature.properties.color};
-              },             
-              onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties;                    
-                var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
-                              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
-                            
-                              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
-                              
-                              <p><strong>Статус:</strong>${props.status_name}</p>`;
-                layer.bindPopup(content);
-                 
+        fetch(problem_dataurl)
+        .then(function(resp) {
+          return resp.json();
+        })
+        .then(function(data) {
+
+
+
+
+          L.geoJson(data, { 
+            style: function (feature) {
+              return {color: feature.properties.color};
+            },             
+            onEachFeature: function onEachFeature(feature, layer) {
+              var props = feature.properties;           
+
+              var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
+              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
+
+              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
+
+              <p><strong>Статус:</strong>${props.status}</p>`;
+              layer.bindPopup(content);
+
             }}).addTo(map);          
-          });
+        });
       });
 
 
 
-{% comment %}
+  {% comment %}
 
-function our_layers(map,options){
-  var datasets = new L.GeoJSON.AJAX('{% url "data" %}',{
-    onEachFeature: function onEachFeature(feature, layer) {
-      var props = feature.properties;                    
-                var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
-                              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
-                            
-                              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
-                              
-                              <p><strong>Статус:</strong>${props.status_name}</p>`;
-                layer.bindPopup(content);
+  function our_layers(map,options){
+    var datasets = new L.GeoJSON.AJAX('{% url "data" %}',{
+      onEachFeature: function onEachFeature(feature, layer) {
+        var props = feature.properties;                    
+        var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
+        <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
 
-    }
+        <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
 
-  });
-  datasets.addTo(map);
-}
+        <p><strong>Статус:</strong>${props.status_name}</p>`;
+        layer.bindPopup(content);
 
-{% endcomment %}
+      }
 
+    });
+    datasets.addTo(map);
+  }
 
+  {% endcomment %}
 
 
-    
-    </script>
+
+
+
+</script>
 <meta charset="utf-8">
 {% endblock extrahead %}
 
@@ -145,16 +164,16 @@ function our_layers(map,options){
 {% else %}
 <div class="row mb-3">
   <div class="col-sm-4 mx-auto p-2 text-center">
-  <a class="btn btn-danger  btn-block" href="{% url 'report' %}" role="button">Сообщить о проблеме</a>
-</div>
-<div class="col-sm-4 mx-auto p-2 text-center">
-  <a class="btn btn-info  btn-block" href="{% url 'report' %}" role="button">Список проблем</a>
-</div>
+    <a class="btn btn-danger  btn-block" href="{% url 'report' %}" role="button">Сообщить о проблеме</a>
+  </div>
+  <div class="col-sm-4 mx-auto p-2 text-center">
+    <a class="btn btn-info  btn-block" href="{% url 'report' %}" role="button">Список проблем</a>
+  </div>
 </div>
 {% endif %}
 <div class="row">
   <div class="col-10 mx-auto">
-  {% leaflet_map "main" %}
+    {% leaflet_map "main" %}
   </div>
 </div>
 

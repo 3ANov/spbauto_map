@@ -61,14 +61,14 @@
 
         
       
-      var dataurl = '{% url "data" %}';
+      var problem_dataurl = '{% url "problems_data" %}';
 
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map; 
 
 
         // Download GeoJSON data with Ajax
-        fetch(dataurl)
+        fetch(problem_dataurl)
           .then(function(resp) {
             return resp.json();
           })

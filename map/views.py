@@ -44,8 +44,12 @@ def map_admin(request):
 
 def problems_dataset(request):
     #data = GeoJSONSerializer().serialize(ProblemLabel.objects.all(), use_natural_keys=True, with_modelname=False)
-    if request.user.is_authenticated:
-        data = serialize('geojson', ProblemLabel.objects.all(), fields=('geom', 'description', 'created_date', 'pk'))
-    else:
-        data = serialize('geojson', ProblemLabel.objects.all(), fields=('geom'))
+    data = serialize('geojson', ProblemLabel.objects.all(), fields=('geom', 'description',
+                                                                    'created_date', 'pk', 'status'))
     return HttpResponse(data, content_type="json")
+
+
+def status_dataset(request):
+    data = serialize('json', Status.objects.all())
+    return HttpResponse(data, content_type="json")
+
