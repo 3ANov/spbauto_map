@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'leaflet',
     'djgeojson',
     'copyright',
-    'sitesettings'
+    'sitesettings',
     'accounts',
     'map',
     'crispy_forms',
