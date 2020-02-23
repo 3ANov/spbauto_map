@@ -70,21 +70,28 @@
   window.addEventListener("map:init", function (event) {
     var map = event.detail.map;
         //map.setView(new L.LatLng(59.95, 30.19), 10);  
-
-
-       status_set = fetch(status_dataurl)
+        /*
+      fetch(status_dataurl)
         .then(function(resp) {
           return resp.json();
         })
         .then(function(data) {
          
-            //var arr = jQuery.grep(data , function (element, index) { return element.pk == 1; });
-            //console.log(arr[0]['fields']['name']);
-            return data;
+            arr = jQuery.grep(data , function (element, index) { return element.pk == 1; });
+            console.log(arr[0]['fields']['name']);          
           });
-        console.log(status_set);
-       var arr = jQuery.grep(status_set , function (element, index) { return element.pk == 1; });
-        console.log(arr);
+         */      
+
+         var status_set = fetch(status_dataurl)
+         .then(function(resp) {
+          return resp.json();
+        })
+         .then(function(data) {
+
+           return data;
+        }).catch();
+         console.log(status_set);
+      
 
 
         // Download GeoJSON data with Ajax
