@@ -38,6 +38,11 @@ class ProblemLabel(models.Model):
     def date_format(self):
         return self.created_date.strftime('%d-%m-%Y %H:%M')
 
+    def save(self, *args, **kwargs):
+        if self.status is None:
+            self.status, created = Status.objects.get_or_create(id=1)
+        super(ProblemLabel, self).save(*args, **kwargs)
+
 
 class ProblemLabelForm(forms.ModelForm):
     class Meta:

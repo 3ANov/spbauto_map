@@ -9,14 +9,12 @@ from .models import ProblemLabel
 
 from django.contrib import admin
 
-
-
 urlpatterns = [
     path('', views.home, name='home'),
     path('report', views.problem_report, name='report'),
     path('accounts/', include('accounts.urls')),
-    re_path(r'^data.geojson$',
-            GeoJSONLayerView.as_view(model=ProblemLabel,
-                                     properties=('description', 'date_format')), name='data')
+    path('problems_set', views.problems_dataset, name='problems_data'),
+    path('status_set', views.status_dataset, name='status_data'),
+    #path('data.geojson', GeoJSONLayerView.as_view(model=ProblemLabel), name='data'),
 
 ]

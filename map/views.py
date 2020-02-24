@@ -12,20 +12,11 @@ from .models import ProblemLabel, ProblemLabelForm, Status
 from sitesettings.models import SiteSettings
 from djgeojson.serializers import Serializer as GeoJSONSerializer
 
-'''
-class HomeView(TemplateView):
-    template_name = "map/home.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sitesettings'] = SiteSettings.load()
-        return context
-'''
 
 
 def home(request):
     sitesettings = SiteSettings.load()
-    #problem_label = ProblemLabel.objects.all()
     return render(request, 'map/home.html', {'sitesettings': sitesettings})
 
 
@@ -46,6 +37,19 @@ def problem_report(request):
     else:
         return HttpResponseRedirect('/')
 
+
 def map_admin(request):
     sitesettings = SiteSettings.load()
+
+
+def problems_dataset(request):
+    #data = GeoJSONSerializer().serialize(ProblemLabel.objects.all(), use_natural_keys=True, with_modelname=False)
+    data = serialize('geojson', ProblemLabel.objects.all(), fields=('geom', 'description',
+                                                                    'created_date', 'pk', 'status'))
+    return HttpResponse(data, content_type="json")
+
+
+def status_dataset(request):
+    data = serialize('json', Status.objects.all())
+    return HttpResponse(data, content_type="json")
 
