@@ -68,26 +68,8 @@
 
   window.addEventListener("map:init", function (event) {
     var map = event.detail.map;
-        //map.setView(new L.LatLng(59.95, 30.19), 10);
-        
-        let array_set = Array();
-      fetch(status_dataurl)
-        .then(function(resp) {
-          return resp.json();
-        })
-        .then(function(data) {
-         
-            arr = jQuery.grep(data , function (element, index) { return element.pk == 1; });
-            console.log(arr[0]['fields']['name']); 
-            array_set.push(arr[0]['fields']['name']);   
-          });
-          
-        
        
-
-       
-
-
+        
         // Download GeoJSON data with Ajax
         fetch(problem_dataurl)
         .then(function(resp) {
@@ -101,7 +83,7 @@
           })
           .then(function(status_data) {
 
-           
+
 
             L.geoJson(data, { 
               style: function (feature) {

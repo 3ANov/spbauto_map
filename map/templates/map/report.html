@@ -61,30 +61,46 @@
 
         
       
-      var problem_dataurl = '{% url "problems_data" %}';
+     var problem_dataurl = '{% url "problems_data" %}';
+  var status_dataurl = '{% url "status_data" %}';
 
-      window.addEventListener("map:init", function (event) {
-        var map = event.detail.map; 
-
-
+  window.addEventListener("map:init", function (event) {
+    var map = event.detail.map;
+       
+        
         // Download GeoJSON data with Ajax
         fetch(problem_dataurl)
-          .then(function(resp) {
-            return resp.json();
+        .then(function(resp) {
+          return resp.json();
+        })
+        .then(function(data) {
+
+          fetch(status_dataurl)
+          .then(function(status_resp) {
+            return status_resp.json();
           })
-          .then(function(data) {
-            L.geoJson(data, {               
+          .then(function(status_data) {
+
+
+
+            L.geoJson(data, { 
+              style: function (feature) {
+                return {color: feature.properties.color};
+              },             
               onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties;                
+                var props = feature.properties;           
+
                 var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
-                              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
-                            
-                              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
-                              
-                              <p><strong>Статус:</strong>${props.status_name}</p>`;
+                <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
+
+                <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
+
+                <p><strong>Статус:</strong>${jQuery.grep(status_data , function (element, index) { return element.pk == props.status; })[0]['fields']['name']}</p>`;
                 layer.bindPopup(content);
-            }}).addTo(map);
-          });
+
+              }}).addTo(map);  
+          });        
+        });
       });
 
 
