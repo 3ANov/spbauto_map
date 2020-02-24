@@ -63,14 +63,14 @@
   {% endcomment %}
 
 
-  var status_set;
   var problem_dataurl = '{% url "problems_data" %}';
   var status_dataurl = '{% url "status_data" %}';
 
   window.addEventListener("map:init", function (event) {
     var map = event.detail.map;
-        //map.setView(new L.LatLng(59.95, 30.19), 10);  
-        /*
+        //map.setView(new L.LatLng(59.95, 30.19), 10);
+        
+        let array_set = Array();
       fetch(status_dataurl)
         .then(function(resp) {
           return resp.json();
@@ -78,20 +78,14 @@
         .then(function(data) {
          
             arr = jQuery.grep(data , function (element, index) { return element.pk == 1; });
-            console.log(arr[0]['fields']['name']);          
+            console.log(arr[0]['fields']['name']); 
+            array_set.push(arr[0]['fields']['name']);   
           });
-         */      
+          
+        
+       
 
-         var status_set = fetch(status_dataurl)
-         .then(function(resp) {
-          return resp.json();
-        })
-         .then(function(data) {
-
-           return data;
-        }).catch();
-         console.log(status_set);
-      
+       
 
 
         // Download GeoJSON data with Ajax
@@ -101,25 +95,31 @@
         })
         .then(function(data) {
 
+          fetch(status_dataurl)
+          .then(function(status_resp) {
+            return status_resp.json();
+          })
+          .then(function(status_data) {
 
+           
 
+            L.geoJson(data, { 
+              style: function (feature) {
+                return {color: feature.properties.color};
+              },             
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties;           
 
-          L.geoJson(data, { 
-            style: function (feature) {
-              return {color: feature.properties.color};
-            },             
-            onEachFeature: function onEachFeature(feature, layer) {
-              var props = feature.properties;           
+                var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
+                <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
 
-              var content = `<p><strong>Номер проблемы:</strong> ${props.pk}</p>
-              <p><strong>Описание проблемы:</strong> ${props.description}</p>                              
+                <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
 
-              <p><strong>Время добавления:</strong>${ new Date(props.created_date).toLocaleString()}</p> 
+                <p><strong>Статус:</strong>${jQuery.grep(status_data , function (element, index) { return element.pk == props.status; })[0]['fields']['name']}</p>`;
+                layer.bindPopup(content);
 
-              <p><strong>Статус:</strong>${props.status}</p>`;
-              layer.bindPopup(content);
-
-            }}).addTo(map);          
+              }}).addTo(map);  
+          });        
         });
       });
 
