@@ -9,7 +9,9 @@
 {% leaflet_css %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
-
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 <script type="text/javascript">
 
   {% comment %}
@@ -68,8 +70,8 @@
 
   window.addEventListener("map:init", function (event) {
     var map = event.detail.map;
-       
-        
+    
+    
         // Download GeoJSON data with Ajax
         fetch(problem_dataurl)
         .then(function(resp) {
@@ -83,12 +85,21 @@
           })
           .then(function(status_data) {
 
+            var markers = new L.MarkerClusterGroup({
+              maxClusterRadius: 60,
+              disableClusteringAtZoom: 17,
+              spiderfyOnMaxZoom: false
+            });
+            
+            
 
 
-            L.geoJson(data, { 
+            var geoJsonLayer = L.geoJson(data, { 
+              /*
               style: function (feature) {
                 return {color: feature.properties.color};
-              },             
+              },     
+              */        
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties;           
 
@@ -99,8 +110,14 @@
 
                 <p><strong>Статус:</strong>${jQuery.grep(status_data , function (element, index) { return element.pk == props.status; })[0]['fields']['name']}</p>`;
                 layer.bindPopup(content);
+                
+              }});
 
-              }}).addTo(map);  
+            markers.addLayer(geoJsonLayer);
+            map.addLayer(markers);
+            
+            
+
           });        
         });
       });
@@ -134,6 +151,7 @@
 
 
 </script>
+
 <meta charset="utf-8">
 {% endblock extrahead %}
 
