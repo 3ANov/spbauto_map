@@ -6,13 +6,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django_tables2 import SingleTableView
 from djgeojson.views import GeoJSONLayerView
 
 from .models import ProblemLabel, ProblemLabelForm, Status
 from sitesettings.models import SiteSettings
 from djgeojson.serializers import Serializer as GeoJSONSerializer
 
-
+from .tables import ProblemsTable
 
 
 def home(request):
@@ -53,3 +54,10 @@ def status_dataset(request):
     data = serialize('json', Status.objects.all())
     return HttpResponse(data, content_type="json")
 
+
+class ProblemsListView(SingleTableView):
+    sitesettings = SiteSettings.load()
+    model = ProblemLabel
+    table_class = ProblemsTable
+    template_name = 'map/problems_list.html'
+    extra_context = {'sitesettings': sitesettings}

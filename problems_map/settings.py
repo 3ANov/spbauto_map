@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'leaflet',
     'djgeojson',
     'copyright',
+    'django_tables2',
     'sitesettings',
     'accounts',
     'map',

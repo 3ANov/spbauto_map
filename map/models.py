@@ -22,7 +22,7 @@ class Status(models.Model):
 
 class ProblemLabel(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=500, verbose_name="Описание проблемы")
     created_date = models.DateTimeField(default=timezone.now)
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True)
     geom = gismodels.GeometryField()
