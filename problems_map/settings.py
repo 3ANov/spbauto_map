@@ -88,11 +88,11 @@ WSGI_APPLICATION = 'problems_map.wsgi.application'
 DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
-         'NAME': 'geomap_db',
-         'USER': '',
-         'PASSWORD': '',
+         'NAME': 'geomap_db1',
+         'USER': 'testuser',
+         'PASSWORD': 'testuser',
          'HOST': '127.0.0.1',
-         'PORT': '',
+         'PORT': '5434',
     },
 }
 
@@ -140,19 +140,12 @@ LOGIN_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-
-from urllib3 import request, PoolManager
-import json
-http = PoolManager()
-r = http.request('GET', "https://mailtrap.io/api/v1/inboxes.json?api_token=4955b1ced35fd1e2f24d1b1444c0528c")
-credentials = json.loads(r.data.decode('utf-8'))[0]
-print(credentials)
-
-EMAIL_HOST = credentials['domain']
-EMAIL_HOST_USER = credentials['username']
-EMAIL_HOST_PASSWORD = credentials['password']
-EMAIL_PORT = credentials['smtp_ports'][0]
-EMAIL_USE_TLS = True
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'info@google.ru'
 
 
 #AUTH_USER_MODEL = 'accounts.MyUser'
@@ -164,11 +157,6 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 18,
     'RESET_VIEW': False
 }
-
 GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
