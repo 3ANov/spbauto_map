@@ -21,6 +21,7 @@ class Status(models.Model):
 
 
 class ProblemLabel(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name="№")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
                                verbose_name="добавлено пользователем")
     description = models.CharField(max_length=500, verbose_name="описание проблемы")
