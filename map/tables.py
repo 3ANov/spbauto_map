@@ -1,12 +1,14 @@
-from django_tables2 import tables
+import django_tables2 as tables
 from .models import ProblemLabel
 
 
 class ProblemsTable(tables.Table):
+    description = tables.TemplateColumn(
+        '{{value|truncatewords:10}}')
     class Meta:
         model = ProblemLabel
-        template_name = "django_tables2/bootstrap4.html"
-        fields = ("id", "description", "geom")
+        fields = ("id", "description", "created_date")
         row_attrs = {
             "bgcolor": lambda record: record.status.color
         }
+

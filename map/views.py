@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from django_tables2 import SingleTableView
+from django_tables2 import SingleTableView, LazyPaginator, RequestConfig
 from djgeojson.views import GeoJSONLayerView
 
 from .models import ProblemLabel, ProblemLabelForm, Status
@@ -55,9 +55,8 @@ def status_dataset(request):
     return HttpResponse(data, content_type="json")
 
 
-class ProblemsListView(SingleTableView):
+def problems_list(request):
     sitesettings = SiteSettings.load()
-    model = ProblemLabel
-    table_class = ProblemsTable
-    template_name = 'map/problems_list.html'
-    extra_context = {'sitesettings': sitesettings}
+    table = ProblemsTable(ProblemLabel.objects.all())
+    RequestConfig(request, paginate={"per_page": 25}).configure(table)
+    return render(request, 'map/problems_list.html', {'table': table, 'sitesettings': sitesettings})
