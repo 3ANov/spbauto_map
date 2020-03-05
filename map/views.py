@@ -60,3 +60,7 @@ def problems_list(request):
     table = ProblemsTable(ProblemLabel.objects.all())
     RequestConfig(request, paginate={"per_page": 25}).configure(table)
     return render(request, 'map/problems_list.html', {'table': table, 'sitesettings': sitesettings})
+
+
+def problem_details(request, pk):
+    return HttpResponseRedirect('/')
