@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
 from django.core.serializers import serialize
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -61,3 +61,11 @@ class ProblemsListView(SingleTableView):
     table_class = ProblemsTable
     template_name = 'map/problems_list.html'
     extra_context = {'sitesettings': sitesettings}
+
+
+def admin_page_redirect(request):
+    if request.user.is_staff:
+        return HttpResponseRedirect('/admin')
+    else:
+        return HttpResponseNotFound()
+

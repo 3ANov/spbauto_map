@@ -1,5 +1,5 @@
 from django.urls import path, re_path, include
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from djgeojson.views import GeoJSONLayerView
 from django.contrib.auth import views as auth_views
 
@@ -19,5 +19,5 @@ urlpatterns = [
     path('status_set', views.status_dataset, name='status_data'),
     path("problems_list/", ProblemsListView.as_view(), name='problems_list'),
     #path('data.geojson', GeoJSONLayerView.as_view(model=ProblemLabel), name='data'),
-
+    path("admin_page/", views.admin_page_redirect, name='admin'),
 ]
