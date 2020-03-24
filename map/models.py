@@ -29,6 +29,10 @@ class County(models.Model):
     name = models.CharField(max_length=100)
 
 
+class StateDistrict(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Status(models.Model):
     name = models.CharField(max_length=20)
     color = ColorField()
@@ -43,7 +47,9 @@ class ProblemLabel(models.Model):
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="статус проблемы")
     county = models.ForeignKey(County, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="район области")
     place = models.ForeignKey(Place, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="населённый пункт")
+    state_district = models.ForeignKey(StateDistrict, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="район города")
     road = models.ForeignKey(Road, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="дорога")
+    house_number = models.CharField(max_length=50, verbose_name="номер дома", blank=True)
     geom = gismodels.PointField()
 
     @property
@@ -75,6 +81,15 @@ class ProblemLabel(models.Model):
         if 'road' in json_response['address']:
             print(json_response['address']['road'])
             self.road, created = Road.objects.get_or_create(name=json_response['address']['road'])
+
+        if 'state_district' in json_response['address']:
+            print(json_response['address']['state_district'])
+            self.state_district, created = \
+                StateDistrict.objects.get_or_create(name=json_response['address']['state_district'])
+
+        if 'house_number' in json_response['address']:
+            print(json_response['address']['house_number'])
+            self.house_number = json_response['address']['house_number']
 
         if self.status is None:
             self.status, created = Status.objects.get_or_create(id=1)
