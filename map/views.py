@@ -4,12 +4,14 @@ from django.views.generic import TemplateView
 from django.core.serializers import serialize
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
 
 # Create your views here.
 from django_tables2 import SingleTableView, LazyPaginator, RequestConfig
 from djgeojson.views import GeoJSONLayerView
 
-from .models import ProblemLabel, ProblemLabelForm, Status
+from .models import ProblemLabel, ProblemLabelForm, Status, ProblemLabelFilter
 from sitesettings.models import SiteSettings
 from djgeojson.serializers import Serializer as GeoJSONSerializer
 
@@ -55,11 +57,24 @@ def status_dataset(request):
     return HttpResponse(data, content_type="json")
 
 
+'''
 def problems_list(request):
     sitesettings = SiteSettings.load()
-    table = ProblemsTable(ProblemLabel.objects.all())
+    problems_set = ProblemLabel.objects.all()
+    table = ProblemsTable(problems_set)
+    f = ProblemLabelFilter(request.GET, queryset=problems_set)
     RequestConfig(request, paginate={"per_page": 25}).configure(table)
-    return render(request, 'map/problems_list.html', {'table': table, 'sitesettings': sitesettings})
+    return render(request, 'map/problems_list.html', {'table': table, 'sitesettings': sitesettings, 'filter': f})
+'''
+
+
+class ProblemsListView(SingleTableMixin, FilterView):
+    sitesettings = SiteSettings.load()
+    table_class = ProblemsTable
+    model = ProblemLabel
+    template_name = "map/problems_list.html"
+    filterset_class = ProblemLabelFilter
+    extra_context = {'sitesettings': sitesettings}
 
 
 def problem_details(request, pk):

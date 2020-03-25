@@ -1,20 +1,15 @@
-import time
 import urllib
 import json
-
-import pytz
+import django_filters
 from colorfield.fields import ColorField
 from django.conf import settings
 from django.db import models
-
 from django.contrib.gis.db import models as gismodels
-# Create your models here.
-from django.forms import ModelForm
 from django import forms
-from django.contrib.gis import forms as gisforms
 from django.utils import timezone
-from leaflet.forms.fields import PointField
 from leaflet.forms.widgets import LeafletWidget
+
+# Create your models here.
 
 
 class Road(models.Model):
@@ -51,17 +46,6 @@ class ProblemLabel(models.Model):
     road = models.ForeignKey(Road, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="дорога")
     house_number = models.CharField(max_length=50, verbose_name="номер дома", blank=True)
     geom = gismodels.PointField()
-
-    @property
-    def status_name(self):
-        self.status.name
-
-
-
-    #return self.created_date.strftime('%d-%m-%Y %H:%M')
-    @property
-    def date_format(self):
-        return self.created_date.strftime('%d-%m-%Y %H:%M')
 
     def save(self, *args, **kwargs):
         response = urllib.request.urlopen('http://localhost:8080/reverse?lon=' + str(self.geom.x)
@@ -106,3 +90,9 @@ class ProblemLabelForm(forms.ModelForm):
         }
         widgets = {'description': forms.Textarea(attrs={"rows": 5, "cols": 10, 'placeholder': 'Описание проблемы'}),
                    'geom': LeafletWidget()}
+
+
+class ProblemLabelFilter(django_filters.FilterSet):
+    class Meta:
+        model = ProblemLabel
+        fields = ['description']

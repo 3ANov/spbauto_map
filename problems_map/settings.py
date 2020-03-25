@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_registration',
     'colorfield',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -160,3 +161,4 @@ LEAFLET_CONFIG = {
 }
 
 DJANGO_TABLES2_PAGE_RANGE = 8
+

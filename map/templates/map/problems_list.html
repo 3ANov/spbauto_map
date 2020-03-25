@@ -1,18 +1,23 @@
 {% extends 'map/base.html' %}
-
 {% load static %}
-{% load crispy_forms_tags %}
 {% load django_tables2 %}
-
+{% load bootstrap4 %}
 
 
 {% block extrahead %}
 {% endblock extrahead %}
 
 
-{% block content %}   
+{% block content %}
+
 <div class="row">
   <div class="col-sm-11 mx-auto">
+    <div class="col-sm-3 mb-3">
+      <form action="" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        <button type="submit" class="btn btn-dark btn-block mt-2">Показать</button>
+      </form>
+    </div>
     {% block table-wrapper %}
     <div class="table-responsive-sm table-bordered">
       {% block table %}
