@@ -16,22 +16,37 @@ from leaflet.forms.widgets import LeafletWidget
 class Road(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Place(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class County(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class StateDistrict(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Status(models.Model):
     name = models.CharField(max_length=20)
     color = ColorField()
+
+    def __str__(self):
+        return self.name
 
 
 class ProblemLabel(models.Model):
@@ -43,7 +58,8 @@ class ProblemLabel(models.Model):
     status = models.ForeignKey(Status, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="статус проблемы")
     county = models.ForeignKey(County, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="район области")
     place = models.ForeignKey(Place, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="населённый пункт")
-    state_district = models.ForeignKey(StateDistrict, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="район города")
+    state_district = models.ForeignKey(StateDistrict, on_delete=models.SET_NULL, null=True, blank=True,
+                                       verbose_name="район города")
     road = models.ForeignKey(Road, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="дорога")
     house_number = models.CharField(max_length=50, verbose_name="номер дома", blank=True)
     geom = gismodels.PointField()
@@ -92,6 +108,10 @@ class ProblemLabelForm(forms.ModelForm):
 
 
 class ProblemLabelFilter(django_filters.FilterSet):
+    state_district = django_filters.CharFilter(field_name='state_district__name',
+                                               lookup_expr='contains',
+                                               label='Район насёленного пункта')
+
     class Meta:
         model = ProblemLabel
-        fields = ['description']
+        fields = ['state_district']
