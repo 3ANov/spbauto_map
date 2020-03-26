@@ -1,6 +1,7 @@
 import urllib
 import json
 import django_filters
+import requests
 from colorfield.fields import ColorField
 from django.conf import settings
 from django.db import models
@@ -48,10 +49,8 @@ class ProblemLabel(models.Model):
     geom = gismodels.PointField()
 
     def save(self, *args, **kwargs):
-        response = urllib.request.urlopen('http://localhost:8080/reverse?lon=' + str(self.geom.x)
-                                          + '&lat=' + str(self.geom.y)).read()
-        json_response = json.loads(response.decode('utf-8'))
-
+        response = requests.get('http://localhost:8080/reverse?lon=' + str(self.geom.x) + '&lat=' + str(self.geom.y))
+        json_response = response.json()
         if 'county' in json_response['address']:
             print(json_response['address']['county'])
             self.county, created = County.objects.get_or_create(name=json_response['address']['county'])
