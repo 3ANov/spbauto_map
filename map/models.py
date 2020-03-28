@@ -1,5 +1,3 @@
-import urllib
-import json
 import django_filters
 import requests
 from colorfield.fields import ColorField
@@ -9,6 +7,7 @@ from django.contrib.gis.db import models as gismodels
 from django import forms
 from django.utils import timezone
 from leaflet.forms.widgets import LeafletWidget
+
 
 # Create your models here.
 
@@ -108,10 +107,26 @@ class ProblemLabelForm(forms.ModelForm):
 
 
 class ProblemLabelFilter(django_filters.FilterSet):
+    status = django_filters.ModelChoiceFilter(queryset=Status.objects.all())
+
     state_district = django_filters.CharFilter(field_name='state_district__name',
-                                               lookup_expr='contains',
+                                               lookup_expr='icontains',
                                                label='Район насёленного пункта')
+
+    place = django_filters.CharFilter(field_name='place__name',
+                                      lookup_expr='icontains',
+                                      label='Населённый пункт')
+
+    county = django_filters.CharFilter(field_name='county__name',
+                                       lookup_expr='icontains',
+                                       label='Район области')
+
+    road = django_filters.CharFilter(field_name='road__name',
+                                     lookup_expr='icontains',
+                                     label='Улица')
+
+    id = django_filters.NumberFilter(field_name='id', lookup_expr='in')
 
     class Meta:
         model = ProblemLabel
-        fields = ['state_district']
+        fields = ['id', 'status', 'county', 'place', 'state_district', 'road']

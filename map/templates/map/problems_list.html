@@ -4,6 +4,7 @@
 {% load bootstrap4 %}
 
 
+
 {% block extrahead %}
 {% endblock extrahead %}
 
@@ -12,14 +13,14 @@
 
 <div class="row">
   <div class="col-sm-11 mx-auto">
-    <div class="col-sm-3 mb-3">
-      <form action="" method="get" class="form form-inline">
-       
+    <div class="col-md-5">
+      <form action="" method="get" class="mb-3">
         {% bootstrap_form filter.form layout='inline' %}
-
         <button type="submit" class="btn btn-dark btn-block mt-2">Показать</button>
       </form>
     </div>
+
+
     {% block table-wrapper %}
     <div class="table-responsive-sm table-bordered">
       {% block table %}
