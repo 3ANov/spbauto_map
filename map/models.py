@@ -91,6 +91,7 @@ class ProblemLabel(models.Model):
 
         if self.status is None:
             self.status, created = Status.objects.get_or_create(id=1)
+
         super(ProblemLabel, self).save(*args, **kwargs)
 
 
@@ -124,8 +125,12 @@ class ProblemLabelFilter(django_filters.FilterSet):
     road = django_filters.CharFilter(field_name='road__name',
                                      lookup_expr='icontains',
                                      label='Улица')
+    '''                              
+    road = django_filters.ModelChoiceFilter(queryset=Road.objects.all(),
+                                     label='Улица')
+    '''
 
-    id = django_filters.NumberFilter(field_name='id', lookup_expr='in')
+    id = django_filters.NumberFilter(field_name='id', min_value=1, label='Номер проблемы')
 
     class Meta:
         model = ProblemLabel
