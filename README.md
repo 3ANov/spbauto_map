@@ -11,4 +11,7 @@
 После создания базы в postgres, необходимо для неё добавить(создать) расширение postgis.  
 (можно выполнить запрос к базе CREATE EXTENSION postgis;)
 
-Для применения миграций необходимо в _**map/urls.py**_ закоментировать  **path('accounts/', include('accounts.urls'))**
+Для применения миграций необходимо в _**map/urls.py**_ закоментировать  **path('accounts/', include('accounts.urls'))**  
+
+В проекте используется обратное геокодирование с помощью геокодера **jrg** (_https://github.com/gojuno/jrg_)  
+Для запуска контейнера использовать: **docker run --rm --name geocoder -v pgdata:/pgdata -d -p 8080:80 jrg**  

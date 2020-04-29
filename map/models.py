@@ -44,6 +44,9 @@ class Status(models.Model):
     name = models.CharField(max_length=20)
     color = ColorField()
 
+    class Meta:
+        verbose_name_plural = "Список статусов решения проблем"
+
     def __str__(self):
         return self.name
 
@@ -62,6 +65,9 @@ class ProblemLabel(models.Model):
     road = models.ForeignKey(Road, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="дорога")
     house_number = models.CharField(max_length=50, verbose_name="номер дома", blank=True)
     geom = gismodels.PointField()
+
+    class Meta:
+        verbose_name_plural = "Список дорожных проблем"
 
     def save(self, *args, **kwargs):
         response = requests.get('http://localhost:8080/reverse?lon=' + str(self.geom.x) + '&lat=' + str(self.geom.y))

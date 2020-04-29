@@ -14,4 +14,4 @@ class GeneralSiteSetting(admin.ModelAdmin):
     inlines = [SocialLinkInline]
 
 
-admin.site.register(SiteSettings,GeneralSiteSetting)
+admin.site.register(SiteSettings, GeneralSiteSetting)
