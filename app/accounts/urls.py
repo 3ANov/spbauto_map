@@ -1,8 +1,6 @@
-from django.shortcuts import redirect
 from django.urls import path
 from . import views
 from .views import RegistrationViewCustom
-from .signals import *
 
 urlpatterns = [
     path('login/', views.LoginViewCustom.as_view(), name='login'),

@@ -1,26 +1,20 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView
 from django.core.serializers import serialize
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
 # Create your views here.
-from django_tables2 import SingleTableView, LazyPaginator, RequestConfig
-from djgeojson.views import GeoJSONLayerView
 
 from .models import ProblemLabel, ProblemLabelForm, Status, ProblemLabelFilter
-from sitesettings.models import SiteSettings
-from djgeojson.serializers import Serializer as GeoJSONSerializer
+from app.sitesettings.models import SiteSettings
 
 from .tables import ProblemsTable
 
 
 def home(request):
     sitesettings = SiteSettings.load()
-    return render(request, 'map/home.html', {'sitesettings': sitesettings})
+    return render(request, 'map/templates/map/home.html', {'sitesettings': sitesettings})
 
 
 def problem_report(request):
@@ -35,7 +29,7 @@ def problem_report(request):
                 return HttpResponseRedirect('/')
         else:
             form = ProblemLabelForm()
-        return render(request, 'map/report.html', {'sitesettings': sitesettings,
+        return render(request, 'map/templates/map/report.html', {'sitesettings': sitesettings,
                                                   'form': form})
     else:
         return HttpResponseRedirect('/')
@@ -72,7 +66,7 @@ class ProblemsListView(SingleTableMixin, FilterView):
     sitesettings = SiteSettings.load()
     table_class = ProblemsTable
     model = ProblemLabel
-    template_name = "map/problems_list.html"
+    template_name = "map/templates/map/problems_list.html"
     filterset_class = ProblemLabelFilter
     extra_context = {'sitesettings': sitesettings}
 

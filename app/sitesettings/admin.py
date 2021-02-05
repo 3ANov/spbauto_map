@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from sitesettings.models import SiteSettings
-from sitesettings.models import SocialLink
+from app.sitesettings.models import SiteSettings
+from app.sitesettings.models import SocialLink
 
 
 class SocialLinkInline(admin.StackedInline):
