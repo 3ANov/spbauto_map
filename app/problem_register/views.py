@@ -14,7 +14,7 @@ from .tables import ProblemsTable
 
 def home(request):
     sitesettings = SiteSettings.load()
-    return render(request, 'map/templates/map/home.html', {'site_settings': sitesettings})
+    return render(request, 'problem_register/templates/problem_register/home.html', {'site_settings': sitesettings})
 
 
 def problem_report(request):
@@ -29,7 +29,7 @@ def problem_report(request):
                 return HttpResponseRedirect('/')
         else:
             form = ProblemLabelForm()
-        return render(request, 'map/templates/map/report.html', {'site_settings': sitesettings,
+        return render(request, 'problem_register/templates/problem_register/report.html', {'site_settings': sitesettings,
                                                   'form': form})
     else:
         return HttpResponseRedirect('/')
@@ -58,7 +58,7 @@ def problems_list(request):
     table = ProblemsTable(problems_set)
     f = ProblemLabelFilter(request.GET, queryset=problems_set)
     RequestConfig(request, paginate={"per_page": 25}).configure(table)
-    return render(request, 'map/problems_list.html', {'table': table, 'site_settings': site_settings, 'filter': f})
+    return render(request, 'problem_register/problems_list.html', {'table': table, 'site_settings': site_settings, 'filter': f})
 '''
 
 
@@ -66,7 +66,7 @@ class ProblemsListView(SingleTableMixin, FilterView):
     sitesettings = SiteSettings.load()
     table_class = ProblemsTable
     model = ProblemLabel
-    template_name = "map/templates/map/problems_list.html"
+    template_name = "problem_register/templates/problem_register/problems_list.html"
     filterset_class = ProblemLabelFilter
     extra_context = {'site_settings': sitesettings}
 

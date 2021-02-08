@@ -1,4 +1,4 @@
-{% extends 'map/base.html' %}
+{% extends 'problem_register/base.html' %}
 {% load static %}
 
 {% block extrahead %}
@@ -58,7 +58,7 @@
     }
   }
   );
-  map.addLayer(geojsonTileLayer);
+  problem_register.addLayer(geojsonTileLayer);
 
 
 
@@ -68,7 +68,7 @@
   var problem_dataurl = '{% url "problems_data" %}';
   var status_dataurl = '{% url "status_data" %}';
 
-  window.addEventListener("map:init", function (event) {
+  window.addEventListener("problem_register:init", function (event) {
     var map = event.detail.map;
     
     
@@ -126,7 +126,7 @@
 
   {% comment %}
 
-  function our_layers(map,options){
+  function our_layers(problem_register,options){
     var datasets = new L.GeoJSON.AJAX('{% url "data" %}',{
       onEachFeature: function onEachFeature(feature, layer) {
         var props = feature.properties;                    
@@ -141,7 +141,7 @@
       }
 
     });
-    datasets.addTo(map);
+    datasets.addTo(problem_register);
   }
 
   {% endcomment %}

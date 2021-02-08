@@ -1,4 +1,4 @@
-{% extends 'map/base.html' %}
+{% extends 'problem_register/base.html' %}
 
 {% load static %}
 {% load crispy_forms_tags %}
@@ -53,7 +53,7 @@
             }
         }
     );
-    map.addLayer(geojsonTileLayer);
+    problem_register.addLayer(geojsonTileLayer);
 
 
 {% endcomment %}
@@ -64,7 +64,7 @@
      var problem_dataurl = '{% url "problems_data" %}';
   var status_dataurl = '{% url "status_data" %}';
 
-  window.addEventListener("map:init", function (event) {
+  window.addEventListener("problem_register:init", function (event) {
     var map = event.detail.map;
        
         

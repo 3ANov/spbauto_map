@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'site_settings',
     'accounts',
-    'map',
+    'problem_register',
     'crispy_forms',
     'django_registration',
     'colorfield',
