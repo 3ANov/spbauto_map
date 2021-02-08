@@ -1,9 +1,6 @@
 import django_tables2 as tables
-
-
-from .models import ProblemLabel, ProblemLabelFilter
+from .models import ProblemLabel
 from django_tables2.utils import A
-from django_filters.views import FilterView
 
 
 class ProblemsTable(tables.Table):

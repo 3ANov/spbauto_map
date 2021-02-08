@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .views import RegistrationViewCustom
 
 urlpatterns = [
     path('login/', views.LoginViewCustom.as_view(), name='login'),
@@ -11,7 +10,7 @@ urlpatterns = [
     path('reset/done/', views.PasswordResetCompleteViewCustom.as_view(), name='password_reset_complete'),
 
     path('register/',
-         RegistrationViewCustom.as_view(success_url='/'),
+         views.RegistrationViewCustom.as_view(success_url='/'),
          name='django_registration_register'),
 
 ]
