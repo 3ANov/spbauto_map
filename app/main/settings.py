@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from glob import glob
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -44,9 +46,9 @@ INSTALLED_APPS = [
     'djgeojson',
     'copyright',
     'django_tables2',
-    'sitesettings',
-    'app.accounts',
-    'app.map',
+    'site_settings',
+    'accounts',
+    'map',
     'crispy_forms',
     'django_registration',
     'colorfield',
@@ -170,3 +172,6 @@ LEAFLET_CONFIG = {
 
 DJANGO_TABLES2_PAGE_RANGE = 8
 
+
+GDAL_LIBRARY_PATH = glob('/usr/lib/libgdal.so.*')[0]
+GEOS_LIBRARY_PATH = glob('/usr/lib/libgeos_c.so.*')[0]

@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sitesettings', '0001_initial'),
+        ('site_settings', '0001_initial'),
     ]
 
     operations = [
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('link', models.URLField()),
                 ('icon', models.CharField(max_length=60)),
-                ('settings', models.ForeignKey(default=1, on_delete=django.db.models.deletion.SET_DEFAULT, to='sitesettings.SiteSettings')),
+                ('settings', models.ForeignKey(default=1, on_delete=django.db.models.deletion.SET_DEFAULT, to='site_settings.SiteSettings')),
             ],
             options={
                 'verbose_name_plural': 'Ссылки на социальные сети',
