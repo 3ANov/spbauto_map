@@ -1,0 +1,42 @@
+version: '3.8'
+
+
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    command: gunicorn -w 4 main.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - 8000
+    env_file:
+      - env/.env.prod
+    depends_on:
+      - db
+  db:
+    image: postgres:12.5-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testuser
+      - POSTGRES_DB=db_for_spbauto_map
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - 80:80
+    depends_on:
+      - web
+  redis:
+    image: "redis:alpine"
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
