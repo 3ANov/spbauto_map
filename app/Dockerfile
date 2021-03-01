@@ -13,7 +13,6 @@ RUN apk add --no-cache \
             --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
         postgresql-client \
         libpq \
-        nginx\
     && apk add --no-cache \
                --upgrade \
                --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
@@ -31,7 +30,7 @@ RUN apk add --no-cache \
     && ln -s /usr/lib/libproj.so.15 /usr/lib/libproj.so \
     && ln -s /usr/lib/libgdal.so.20 /usr/lib/libgdal.so \
     && ln -s /usr/lib/libgeos_c.so.1 /usr/lib/libgeos_c.so \
-    && mkdir /var/run/nginx
+    && apk add --no-cache libffi-dev openssl-dev cargo
 
 # install dependencies
 RUN pip install --upgrade pip
