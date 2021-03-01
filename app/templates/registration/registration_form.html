@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
-
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="row">
-	  <div class="col-sm-4 mx-auto"> 
-	  	{% if user.is_authenticated %}
-		  Привет {{ user.username }}!
-		  <p><a href="{% url 'logout' %}">Выйти</a></p>
-		  <p><a href="{% url 'password_reset' %}">Сбросить пароль</a></p>
-		{% else %}
-	  <form method="post">
-	  	 {% csrf_token %}
-	  	 <input type="hidden" name="next" value="{{ next }}">
+    <div class="row">
+        <div class="col-sm-4 mx-auto">
+            {% if user.is_authenticated %}
+                Привет {{ user.username }}!
+                <p><a href="{% url 'logout' %}">Выйти</a></p>
+                <p><a href="{% url 'password_reset' %}">Сбросить пароль</a></p>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
 
-	    {{ form|crispy }}
-	  <button type="submit" class="btn btn-dark btn-block">Зарегистрироваться</button>
-	  </form>
-	  {% endif %}
-	</div>
-</div>
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-dark btn-block">Зарегистрироваться</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
