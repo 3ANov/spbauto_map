@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers import serialize
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import FormView
@@ -11,7 +12,7 @@ from problem_register.models import ProblemLabel, Status
 from problem_register.tables import ProblemsTable
 
 
-class ReportView(FormView):
+class ReportView(LoginRequiredMixin, FormView):
     template_name = 'problem_register/report.html'
     form_class = ProblemLabelForm
     success_url = '/'
