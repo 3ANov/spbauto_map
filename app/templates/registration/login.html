@@ -19,7 +19,10 @@
                 <p class="text-left mb-0 mt-2"><a href="{% url 'django_registration_register' %}">Зарегистрироваться</a>
                 </p>
                 <p class="text-left mb-0 mt-1"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
-                <a href="{% url "social:begin" "google-oauth2" %}">Google+</a>
+                <hr class="m-2">
+                <p class="mb-1">Или войдите через социальную сеть</p>
+                <a href="{% url "social:begin" "google-oauth2" %}" class="btn btn-danger"><i class="fab fa-google-plus-g"></i></a>
+                <a href="{% url "social:begin" "vk-oauth2" %}" class="btn btn btn-primary"><i class="fab fa-vk"></i></a>
             {% endif %}
         </div>
     </div>
