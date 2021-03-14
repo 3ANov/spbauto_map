@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-4 mx-auto">
+            {% if user.is_authenticated %}
+                Привет {{ user.username }}!
+                <p><a href="{% url 'logout' %}">Выйти</a></p>
+                <p><a href="{% url 'password_reset' %}">Сбросить пароль</a></p>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-dark btn-block">Войти</button>
+                </form>
+                <p class="text-left mb-0 mt-2"><a href="{% url 'django_registration_register' %}">Зарегистрироваться</a>
+                </p>
+                <p class="text-left mb-0 mt-1"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+                <hr class="m-2">
+                <p class="mb-1">Или войдите через социальную сеть</p>
+                <a href="{% url "social:begin" "google-oauth2" %}" class="btn btn-danger"><i class="fab fa-google-plus-g"></i></a>
+                <a href="{% url "social:begin" "vk-oauth2" %}" class="btn btn btn-primary"><i class="fab fa-vk"></i></a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

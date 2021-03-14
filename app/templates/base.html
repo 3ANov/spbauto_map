@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+{% load static %}
+{% load copyrighttags %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+<script src="https://kit.fontawesome.com/05850b7323.js" crossorigin="anonymous"></script>
+<link rel="icon" type="image/png" href="http://spbauto.org/d/718661/t/favicon.png">
+<meta name="description" content="{{ sitesettings.seo_description }}" />
+{% block extrahead %}
+{% endblock extrahead %}
+</head>
+<body>
+
+
+<div class="container-fluid">
+	<div class="row align-items-center pt-3 pb-3 px-md-5">
+		<div class="col-sm d-none d-md-block ">
+			Присоединяйтесь!
+		</div>
+		<div class="col-sm-1-auto offset-sm-1">
+      {% if user.is_authenticated %}
+			<div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   {{ user.email }}
+  </a>
+
+
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+    {% if user.is_superuser %}
+      <a class="dropdown-item">Административная панель</a>
+    {% endif %}
+
+    {% if user.is_staff %}
+      <a class="dropdown-item" href="#">Обработка проблем</a>
+    {% endif %}
+
+    <a class="dropdown-item" href="#">Добавленные проблемы</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
+  </div>
+</div>
+ {% else %}
+ <a class="btn btn-outline-dark" href="{% url 'login' %}" role="button">Войти</a>
+ 
+     
+    {% endif %}
+		
+
+		</div>
+	</div>
+  <div class="row align-items-center pt-3 pb-3 main-logo-shadow">
+	  <div class="col-sm-auto offset-sm-1 mx-auto">
+	  	<!--
+	  	 <div class="row">
+	  		<img src="http://spbauto.org/d/718661/t/v3189/graphics/logo.png" class="img-fluid" >
+		</div>
+
+		<div class="row mt-2">
+		  <span class="logo-below-text">
+		  	РЕГИОНАЛЬНАЯ ОБЩЕСТВЕННАЯ ОРГАНИЗАЦИЯ АВТОМОБИЛИСТОВ «СПБ.АВТО»
+		  </span>
+		</div>
+	-->
+
+
+
+	<figure class="figure mb-0">
+  		<a href="{% url 'home' %}"><img src="http://spbauto.org/d/718661/t/v3189/graphics/logo.png" class="figure-img img-fluid rounded" ></a>
+  		<figcaption class="figure-caption text-center logo-below-text">РЕГИОНАЛЬНАЯ ОБЩЕСТВЕННАЯ ОРГАНИЗАЦИЯ АВТОМОБИЛИСТОВ «СПБ.АВТО»</figcaption>
+	</figure>
+
+	</div>
+    <div class="col-sm-6 mx-auto">
+    	<h1 class="main-title text-uppercase">{{ sitesettings.title }}</h1>
+    </div>
+  </div>
+
+
+
+  <div class="row pt-3 pb-3">
+    <div class="col mb-3">
+      {% block content %}
+		    {% endblock %}
+    </div>   
+  </div>
+  </div>
+<footer class="footer">
+  <div class="container-fluid">
+	<div class="row pt-3 pb-3 border-top">
+    <div class="col-sm-4 text-center">
+     	<div class="row">
+     		<div class="col">  
+     			©{% getCopyrightYears %}
+     		</div>
+     	</div>
+     	<div class="row">
+     		<div class="col">
+	     		<span class="social-icons">
+            {% for sociallink in sitesettings.sociallink_set.all %}
+              <a href="{{sociallink.link}}"><i class="{{sociallink.icon}}"></i></a>                    
+            {% endfor %}
+	     		</span> 
+     		</div>
+     	</div>
+    </div>   
+    <div class="col-sm-4-auto text-center mx-auto">
+     	<div class="row"> 
+        <div class="col">
+        {{sitesettings.address|linebreaksbr}}
+        </div>
+      </div>
+      <div class="row"> 
+        <div class="col">
+          Телефон:&nbsp;<a href="tel:{{sitesettings.telephone_number}}">{{sitesettings.telephone_number}}</a>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class="col">
+        E-mail:&nbsp;<a href="mailto:{{sitesettings.contact_email}}">{{sitesettings.contact_email}}</a>  
+        </div>      
+      </div>
+    </div>
+    <!--
+    <div class="col-sm-4 text-center">
+     	Текст
+    </div>
+  -->
+  </div>
+
+</div>
+</footer>
+</body>
+	
+</html>

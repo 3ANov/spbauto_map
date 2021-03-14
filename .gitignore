@@ -1,3 +1,11 @@
-# Project exclude paths
-/venv/
+# ADD INGORE
 .idea
+venv
+
+env/.env.dev
+env/.env.prod
+
+
+#Directories
+mediafiles/
+/app/staticfiles/
