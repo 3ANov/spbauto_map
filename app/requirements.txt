@@ -28,3 +28,4 @@ urllib3==1.25.8
 django-redis==4.12.1
 django-recaptcha==2.0.6
 social-auth-app-django==4.0.0
+celery==5.0.5
