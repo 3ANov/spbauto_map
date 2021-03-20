@@ -3,7 +3,6 @@ version: '3.8'
 
 services:
   web:
-    image: app
     build: ./app
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -29,9 +28,6 @@ services:
     command: celery worker --app=core --loglevel=info
     volumes:
       - ./app/:/usr/src/app/
-    environment:
-      - CELERY_BROKER=redis://redis:6379/0
-      - CELERY_BACKEND=redis://redis:6379/0
     env_file:
       - env/.env.dev
     depends_on:
