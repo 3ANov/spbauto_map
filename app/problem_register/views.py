@@ -13,6 +13,7 @@ from problem_register.tables import ProblemsTable
 
 
 class ReportView(LoginRequiredMixin, CreateView):
+    """ View для добавления новой дорожной проблемы """
     model = ProblemLabel
     template_name = 'problem_register/report.html'
     form_class = ProblemLabelForm
@@ -35,6 +36,7 @@ def status_dataset(request):
 
 
 class ProblemsListView(SingleTableMixin, FilterView):
+    """ View для вывода списка проблем, с различными фильтрами"""
     table_class = ProblemsTable
     model = ProblemLabel
     template_name = "problem_register/problems_list.html"

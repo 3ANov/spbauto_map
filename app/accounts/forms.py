@@ -5,6 +5,8 @@ from .models import User
 
 
 class CustomUserCreationForm(RegistrationForm):
+    """ Форма для регистрации пользователя """
+
     captcha = ReCaptchaField(label="I'm not a robot")
 
     class Meta(RegistrationForm.Meta):

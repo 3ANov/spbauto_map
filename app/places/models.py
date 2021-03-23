@@ -1,9 +1,8 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Road(models.Model):
+    """ Модель для хранения названия дороги """
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -11,6 +10,7 @@ class Road(models.Model):
 
 
 class Place(models.Model):
+    """ Модель для хранения названия населённого пункта """
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -18,6 +18,7 @@ class Place(models.Model):
 
 
 class County(models.Model):
+    """ Модель для хранения названия округа """
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -25,6 +26,7 @@ class County(models.Model):
 
 
 class StateDistrict(models.Model):
+    """ Модель для хранения названия района"""
     name = models.CharField(max_length=100)
 
     def __str__(self):

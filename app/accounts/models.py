@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 
 class UserAccountManager(BaseUserManager):
+    """ Кастомный менеджер для добавления Модели-пользователя """
+
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
@@ -27,6 +29,7 @@ class UserAccountManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """ Кастомная модель Пользователя с email-ом, как ключевым полем"""
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'

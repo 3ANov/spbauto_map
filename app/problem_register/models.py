@@ -7,6 +7,9 @@ from places.models import County, Place, StateDistrict, Road
 
 
 class Status(models.Model):
+    """ Модель для хранения статуса проблемы"""
+    """ ex: 'Новая', 'Решённая' и т.д. """
+
     name = models.CharField(max_length=20)
     color = ColorField()
 
@@ -15,6 +18,8 @@ class Status(models.Model):
 
 
 class ProblemLabel(models.Model):
+    """ Модель для хранения данных о дорожной проблеме"""
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
                                verbose_name="добавлено пользователем")
     description = models.CharField(max_length=500, verbose_name="описание проблемы")

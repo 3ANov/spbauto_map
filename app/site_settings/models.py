@@ -5,6 +5,7 @@ from django.db import models
 
 
 class SingletonModel(models.Model):
+    """ Синглтон-модель """
 
     class Meta:
         abstract = True
@@ -28,6 +29,8 @@ class SingletonModel(models.Model):
 
 
 class SiteSettings(SingletonModel):
+    """ Модель для хранения настроек сайта """
+
     title = models.CharField(max_length=100, blank=True)
     seo_description = models.CharField(max_length=200, blank=True)
     address = models.TextField(blank=True)
@@ -39,6 +42,8 @@ class SiteSettings(SingletonModel):
 
 
 class SocialLink(models.Model):
+    """ Модель для хранения ссылок на соц.сети """
+
     settings = models.ForeignKey(SiteSettings, on_delete=models.SET_DEFAULT, default=1)
     link = models.URLField()
     icon = models.CharField(max_length=60)
