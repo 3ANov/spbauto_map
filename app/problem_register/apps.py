@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class MapConfig(AppConfig):
+class ProblemRegisterConfig(AppConfig):
     name = 'problem_register'
