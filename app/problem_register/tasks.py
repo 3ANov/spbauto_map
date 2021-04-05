@@ -7,7 +7,8 @@ from problem_register.services import add_places_info_for_problem
 logger = logging.getLogger(__name__)
 
 
-@app.task()
+@app.task(ignore_result=True, rate_limit='1/s')
 def add_places_task(pk):
     logger.info('Добавление данных для проблемы %s время: %s', str(pk), datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     add_places_info_for_problem(pk)
+

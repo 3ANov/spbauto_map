@@ -47,7 +47,4 @@ class ProblemsListView(SingleTableMixin, FilterView):
 
 
 def problem_details(request, pk):
-    debug_task()
-    add_places_task.delay(pk)
-
     return HttpResponse()
