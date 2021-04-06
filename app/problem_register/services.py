@@ -33,24 +33,30 @@ def add_places_info_for_problem(problem_pk):
         logger.info(api_response.address)
 
         if api_response.address.road:
-            problem.road, _ = Road.objects.get_or_create(name=api_response.address.road)
+            road, _ = Road.objects.get_or_create(name=api_response.address.road)
+            problem.objects.update(road=road)
 
         if api_response.address.state_district:
-            problem.state_district, _ = StateDistrict.objects.get_or_create(name=api_response.address.state_district)
+            state_district, _ = StateDistrict.objects.get_or_create(name=api_response.address.state_district)
+            problem.objects.update(state_district=state_district)
 
         if api_response.address.county:
-            problem.county, _ = County.objects.get_or_create(name=api_response.address.county)
+            county, _ = County.objects.get_or_create(name=api_response.address.county)
+            problem.objects.update(county=county)
 
         if api_response.address.house_number:
-            problem.house_number = api_response.address.house_number
+            house_number = api_response.address.house_number
+            problem.objects.update(house_number=house_number)
 
         if api_response.address.hamlet:
-            problem.place, _ = Place.objects.get_or_create(name=api_response.address.hamlet)
+            place, _ = Place.objects.get_or_create(name=api_response.address.hamlet)
+            problem.objects.update(place=place)
         elif api_response.address.town:
-            problem.place, _ = Place.objects.get_or_create(name=api_response.address.town)
+            place, _ = Place.objects.get_or_create(name=api_response.address.town)
+            problem.objects.update(place=place)
         elif api_response.address.state == "Санкт-Петербург":
-            problem.place, _ = Place.objects.get_or_create(name="Санкт-Петербург")
+            place, _ = Place.objects.get_or_create(name="Санкт-Петербург")
+            problem.objects.update(place=place)
 
-        problem.save()
     except ApiException as e:
         print("Exception when calling ReverseApi->reverse: %s\n" % e)
