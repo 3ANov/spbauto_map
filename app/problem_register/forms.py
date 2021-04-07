@@ -5,6 +5,7 @@ from problem_register.models import ProblemLabel
 
 
 class ProblemLabelForm(forms.ModelForm):
+    """ Форма для добавления новой дорожной проблемы """
     class Meta:
         model = ProblemLabel
         fields = ('description', 'geom')

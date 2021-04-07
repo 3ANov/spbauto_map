@@ -3,7 +3,6 @@ version: '3.8'
 
 services:
   web:
-    image: app
     build: ./app
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -24,6 +23,15 @@ services:
       - POSTGRES_DB=db_for_spbauto_map
   redis:
     image: "redis:alpine"
-
+  celery:
+    build: ./app
+    command: celery -A main worker -l INFO
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - env/.env.dev
+    depends_on:
+      - web
+      - redis
 volumes:
   postgres_data:

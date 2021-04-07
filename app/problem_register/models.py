@@ -1,12 +1,15 @@
 from colorfield.fields import ColorField
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 from django.contrib.gis.db import models as gismodels
 from django.utils import timezone
 from places.models import County, Place, StateDistrict, Road
 
 
 class Status(models.Model):
+    """ Модель для хранения статуса проблемы"""
+    """ ex: 'Новая', 'Решённая' и т.д. """
+
     name = models.CharField(max_length=20)
     color = ColorField()
 
@@ -15,6 +18,8 @@ class Status(models.Model):
 
 
 class ProblemLabel(models.Model):
+    """ Модель для хранения данных о дорожной проблеме"""
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True,
                                verbose_name="добавлено пользователем")
     description = models.CharField(max_length=500, verbose_name="описание проблемы")
@@ -27,3 +32,9 @@ class ProblemLabel(models.Model):
     road = models.ForeignKey(Road, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="дорога")
     house_number = models.CharField(max_length=50, verbose_name="номер дома", blank=True)
     geom = gismodels.PointField()
+
+    def save(self, *args, **kwargs):
+        super(ProblemLabel, self).save(*args, **kwargs)
+        from problem_register.tasks import add_places_task
+        transaction.on_commit(lambda: add_places_task.delay(self.id))
+

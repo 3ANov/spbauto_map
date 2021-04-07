@@ -58,7 +58,7 @@
     }
   }
   );
-  problem_register.addLayer(geojsonTileLayer);
+  map.addLayer(geojsonTileLayer);
 
 
 
@@ -68,7 +68,7 @@
   var problem_dataurl = '{% url "problems_data" %}';
   var status_dataurl = '{% url "status_data" %}';
 
-  window.addEventListener("problem_register:init", function (event) {
+  window.addEventListener("map:init", function (event) {
     var map = event.detail.map;
     
     

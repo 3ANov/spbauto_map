@@ -4,6 +4,7 @@
 {% load crispy_forms_tags %}
 
 {% block extrahead %}
+    <title>{{ sitesettings.title }} | Создать заявку</title>
 {% load leaflet_tags %}
    {% leaflet_js plugins="forms" %}
    {% leaflet_css plugins="forms" %}
@@ -53,7 +54,7 @@
             }
         }
     );
-    problem_register.addLayer(geojsonTileLayer);
+    map.addLayer(geojsonTileLayer);
 
 
 {% endcomment %}
@@ -64,7 +65,7 @@
      var problem_dataurl = '{% url "problems_data" %}';
   var status_dataurl = '{% url "status_data" %}';
 
-  window.addEventListener("problem_register:init", function (event) {
+  window.addEventListener("map:init", function (event) {
     var map = event.detail.map;
        
         

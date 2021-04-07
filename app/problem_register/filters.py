@@ -4,6 +4,7 @@ from problem_register.models import Status, ProblemLabel
 
 
 class ProblemLabelFilter(django_filters.FilterSet):
+    """ Фильтр для модели дорожной проблемы """
     status = django_filters.ModelChoiceFilter(queryset=Status.objects.all())
 
     state_district = django_filters.CharFilter(field_name='state_district__name',
