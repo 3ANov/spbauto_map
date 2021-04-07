@@ -34,29 +34,29 @@ def add_places_info_for_problem(problem_pk):
 
         if api_response.address.road:
             road, _ = Road.objects.get_or_create(name=api_response.address.road)
-            problem.objects.update(road=road)
+            ProblemLabel.objects.filter(id=problem_pk).update(road=road)
 
         if api_response.address.state_district:
             state_district, _ = StateDistrict.objects.get_or_create(name=api_response.address.state_district)
-            problem.objects.update(state_district=state_district)
+            ProblemLabel.objects.filter(id=problem_pk).update(state_district=state_district)
 
         if api_response.address.county:
             county, _ = County.objects.get_or_create(name=api_response.address.county)
-            problem.objects.update(county=county)
+            ProblemLabel.objects.filter(id=problem_pk).update(county=county)
 
         if api_response.address.house_number:
             house_number = api_response.address.house_number
-            problem.objects.update(house_number=house_number)
+            ProblemLabel.objects.filter(id=problem_pk).update(house_number=house_number)
 
         if api_response.address.hamlet:
             place, _ = Place.objects.get_or_create(name=api_response.address.hamlet)
-            problem.objects.update(place=place)
+            ProblemLabel.objects.filter(id=problem_pk).update(place=place)
         elif api_response.address.town:
             place, _ = Place.objects.get_or_create(name=api_response.address.town)
-            problem.objects.update(place=place)
+            ProblemLabel.objects.filter(id=problem_pk).update(place=place)
         elif api_response.address.state == "Санкт-Петербург":
             place, _ = Place.objects.get_or_create(name="Санкт-Петербург")
-            problem.objects.update(place=place)
+            ProblemLabel.objects.filter(id=problem_pk).update(place=place)
 
     except ApiException as e:
         print("Exception when calling ReverseApi->reverse: %s\n" % e)

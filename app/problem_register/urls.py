@@ -11,5 +11,5 @@ urlpatterns = [
     path('problems_set', views.problems_dataset, name='problems_data'),
     path('status_set', views.status_dataset, name='status_data'),
     path("problems_list/", views.ProblemsListView.as_view(), name='problems_list'),
-    path("problem/<int:pk>/", views.problem_details, name="problem_details"),
+    path("problem/<int:pk>/", views.ProblemDetailView.as_view(), name="problem_details"),
 ]

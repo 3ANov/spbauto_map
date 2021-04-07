@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers import serialize
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
@@ -46,5 +46,7 @@ class ProblemsListView(SingleTableMixin, FilterView):
     filterset_class = ProblemLabelFilter
 
 
-def problem_details(request, pk):
-    return HttpResponse()
+class ProblemDetailView(DetailView):
+    model = ProblemLabel
+    template_name = "problem_register/problem_details.html"
+

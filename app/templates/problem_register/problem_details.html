@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extrahead %}
+    <title>{{ sitesettings.title }} | Детали проблемы</title>
+
+
+    <meta charset="utf-8">
+{% endblock extrahead %}
+
+
+{% block content %}
+    <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Описание проблемы</h5>
+    <p class="card-text">{{ object.description }}</p>
+  </div>
+</div>
+
+{% endblock %}
