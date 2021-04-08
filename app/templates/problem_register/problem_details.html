@@ -9,11 +9,57 @@
 
 
 {% block content %}
-    <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Описание проблемы</h5>
-    <p class="card-text">{{ object.description }}</p>
-  </div>
-</div>
+
+    <div class="row mx-1 ">
+        <div class="col-md-7 mx-auto">
+            <div class="row border border-bottom-0 bg-info">
+                <div class="col"><h3 class="my-1">Описание проблемы № {{ object.id }}</h3></div>
+            </div>
+            <div class="row border border-bottom-0 bg-light">
+                <div class="col"><p class="my-1">Статус проблемы: {{ object.status }}</p></div>
+            </div>
+            <div class="row border">
+                <div class="col py-2">
+                    {{ object.description }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mx-auto">
+            <div class="row border border-bottom-0 bg-info">
+                <div class="col"><h3 class="my-1">Адрес проблемы</h3></div>
+            </div>
+            <div class="row border">
+                <div class="col py-2">
+                    {% if object.county %}
+                        <p>{{ object.county }}</p>
+                    {% endif %}
+
+                    {% if object.place %}
+                        <p>{{ object.place }}</p>
+                    {% endif %}
+                    {% if object.state_district %}
+                        <p>{{ object.state_district }}</p>
+                    {% endif %}
+                    {% if object.road %}
+                        <p>{{ object.road }} {{ object.house_number }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mx-2 mt-3">
+        <div class="col-md-11 mx-auto">
+            <div class="row border border-bottom-0 bg-success">
+                <div class="col"><h3 class="my-1">Фотографии</h3></div>
+            </div>
+            <div class="row border">
+                <div class="col py-2">
+                    ыаваыва
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
