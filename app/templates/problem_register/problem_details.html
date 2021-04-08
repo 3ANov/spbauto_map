@@ -9,11 +9,39 @@
 
 
 {% block content %}
-    <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Описание проблемы</h5>
-    <p class="card-text">{{ object.description }}</p>
-  </div>
-</div>
+    <div class="row mx-2">
+        <div class="col">
+            <div class="row border border-bottom-0 bg-info">
+                <div class="col"><h3 class="my-0">Описание проблемы № {{ object.id }}</h3></div>
+            </div>
+            <div class="row border">
+                <div class="col py-2">
+                    {{ object.description }}
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+    <div class="row mx-2 mt-3">
+        <div class="col">
+            <div class="row border border-bottom-0 bg-info">
+                <div class="col"><h3 class="my-0">Адрес проблемы</h3></div>
+            </div>
+            <div class="row border">
+                <div class="col py-2">
+                    <span>
+                        {% if object.county %}
+                            {{ object.county }}
+                        {% endif %}
+
+                        {% if object.county %}
+                            {{ object.county }}
+                        {% endif %}
+
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
