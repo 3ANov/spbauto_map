@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'places',
     'captcha',
     'social_django',
+    'rest_framework',
+    'rest_framework_gis',
 ]
 
 MIDDLEWARE = [
