@@ -34,8 +34,8 @@ RUN apk add --no-cache \
 
 # install dependencies
 RUN pip install --upgrade pip
-COPY requirements/requirements_dev.txt .
-RUN pip install -r requirements_dev.txt
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 RUN pip install git+https://github.com/location-iq/locationiq-python-client.git
 
 # copy entrypoint.sh
