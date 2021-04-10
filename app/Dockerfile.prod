@@ -21,19 +21,16 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apk add --no-cache \
             --upgrade \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
         postgresql-client \
         libpq \
     && apk add --no-cache \
                --upgrade \
-               --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
                --virtual .build-deps \
         postgresql-dev \
         zlib-dev jpeg-dev \
         alpine-sdk \
     && apk add --no-cache \
                --upgrade \
-               --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         geos \
         proj \
         gdal \
@@ -48,6 +45,7 @@ RUN apk add --no-cache \
 RUN pip install --upgrade pip
 COPY ./requirements.txt $APP_HOME
 RUN pip install -r requirements.txt
+RUN pip install git+https://github.com/location-iq/locationiq-python-client.git
 
 
 

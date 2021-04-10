@@ -35,6 +35,16 @@ services:
       - web
   redis:
     image: "redis:alpine"
+  celery:
+    build: ./app
+    command: celery -A main worker -l INFO
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - env/.env.dev
+    depends_on:
+      - web
+      - redis
 
 volumes:
   postgres_data:
