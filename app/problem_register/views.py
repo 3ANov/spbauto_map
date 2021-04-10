@@ -5,12 +5,12 @@ from django.views.generic import CreateView, DetailView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 from problem_register.filters import ProblemLabelFilter
 from problem_register.forms import ProblemLabelForm
 from problem_register.models import ProblemLabel, Status
-from problem_register.serializers import StatusSerializer, ProblemLabelSerializer
+from problem_register.serializers import StatusSerializer, ProblemLabelGeoSerializer, ProblemLabelDetailSerializer
 from problem_register.tables import ProblemsTable
 
 
@@ -45,6 +45,11 @@ class StatusViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StatusSerializer
 
 
-class ProblemLabelViewSet(viewsets.ReadOnlyModelViewSet):
+class ProblemLabelGeoJsonViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProblemLabel.objects.all()
-    serializer_class = ProblemLabelSerializer
+    serializer_class = ProblemLabelGeoSerializer
+
+
+class ProblemLabelDetailAPIView(generics.RetrieveAPIView):
+    queryset = ProblemLabel.objects.all()
+    serializer_class = ProblemLabelDetailSerializer

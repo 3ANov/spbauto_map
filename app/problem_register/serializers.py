@@ -10,8 +10,21 @@ class StatusSerializer(serializers.ModelSerializer):
         fields = ['name', 'color']
 
 
-class ProblemLabelSerializer(GeoFeatureModelSerializer):
+class ProblemLabelGeoSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = ProblemLabel
         geo_field = 'geom'
-        fields = []
+        fields = ['id']
+
+
+class ProblemLabelDetailSerializer(serializers.ModelSerializer):
+    status = serializers.StringRelatedField(many=False)
+    place = serializers.StringRelatedField(many=False)
+    state_district = serializers.StringRelatedField(many=False)
+    county = serializers.StringRelatedField(many=False)
+    road = serializers.StringRelatedField(many=False)
+
+    class Meta:
+        model = ProblemLabel
+        exclude = ['author', 'geom']
+

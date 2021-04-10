@@ -13,8 +13,8 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script type="text/javascript">
-        var problem_dataurl = 'problems_set/';
-        var status_dataurl = 'status_set/';
+        var problem_dataurl = 'api/problems_set/';
+        var status_dataurl = 'api/status_set/';
 
         window.addEventListener("map:init", function (event) {
             var map = event.detail.map;
@@ -41,8 +41,6 @@
 
                             var geoJsonLayer = L.geoJson(data, {
                                 onEachFeature: function onEachFeature(feature, layer) {
-                                    var props = feature.properties;
-
                                     var content = 'новая проблема';
                                     layer.bindPopup(content);
                                 }});
