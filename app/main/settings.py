@@ -238,3 +238,14 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
 REVERSE_GEOCODING_API_URL = 'https://eu1.locationiq.com/v1/reverse.php'
 REVERSE_GEOCODING_API_KEY = os.environ.get('REVERSE_GEOCODING_API_KEY')
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/minute',
+        'user': '120/minute'
+    }
+}
