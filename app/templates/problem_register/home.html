@@ -33,7 +33,6 @@
                             return status_resp.json();
                         })
                         .then(function (status_data) {
-                            console.log(status_data.name)
                             var markers = new L.MarkerClusterGroup({
                                 maxClusterRadius: 60,
                                 disableClusteringAtZoom: 17,
@@ -66,8 +65,16 @@
         });
 
         function getProblemDetailsOnMarkerClick(e) {
-            e.target.bindPopup("This is the Transamerica Pyramid").openPopup();
-            console.log(e);
+            fetch('api/problem_detail/'+e.target.feature.id.toString())
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    var content = '<p>Номер проблемы: '+data.id.toString()+'</p>';
+                    content += '<p>'+data.description+'</p>';
+                    content += '<p>'+data.status+'</p>';
+                    e.target.bindPopup(content).openPopup();
+                });
         }
 
     </script>
