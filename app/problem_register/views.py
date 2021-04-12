@@ -9,7 +9,7 @@ from rest_framework import viewsets, generics
 
 from problem_register.filters import ProblemLabelFilter
 from problem_register.forms import ProblemLabelForm
-from problem_register.models import ProblemLabel, Status
+from problem_register.models import ProblemLabel, ProblemStatus
 from problem_register.serializers import StatusSerializer, ProblemLabelGeoSerializer, ProblemLabelDetailSerializer
 from problem_register.tables import ProblemsTable
 
@@ -23,7 +23,7 @@ class ReportView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.status, _ = Status.objects.get_or_create(name='Новая')
+        form.instance.status, _ = ProblemStatus.objects.get_or_create(name='Новая')
         return super(ReportView, self).form_valid(form)
 
 
@@ -41,7 +41,7 @@ class ProblemDetailView(DetailView):
 
 
 class StatusViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Status.objects.all()
+    queryset = ProblemStatus.objects.all()
     serializer_class = StatusSerializer
 
 

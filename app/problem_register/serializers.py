@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
-from problem_register.models import Status, ProblemLabel
+from problem_register.models import ProblemStatus, ProblemLabel
 
 
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Status
+        model = ProblemStatus
         fields = ['name', 'color']
 
 
