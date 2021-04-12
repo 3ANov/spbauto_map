@@ -1,9 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.serializers import serialize
-from django.http import HttpResponse
 from django.views.generic import CreateView, DetailView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
+from django_filters import rest_framework as filters
 
 from rest_framework import viewsets, generics
 
@@ -47,7 +46,9 @@ class StatusViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProblemLabelGeoJsonViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProblemLabel.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
     serializer_class = ProblemLabelGeoSerializer
+    filterset_fields = ('status',)
 
 
 class ProblemLabelDetailAPIView(generics.RetrieveAPIView):

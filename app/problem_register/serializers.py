@@ -7,7 +7,7 @@ from problem_register.models import ProblemStatus, ProblemLabel
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProblemStatus
-        fields = ['name', 'color']
+        fields = '__all__'
 
 
 class ProblemLabelGeoSerializer(GeoFeatureModelSerializer):
