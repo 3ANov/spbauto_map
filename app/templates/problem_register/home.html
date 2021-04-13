@@ -20,6 +20,9 @@
         window.addEventListener("map:init", function (event) {
             var map = event.detail.map;
 
+
+
+
             fetch(problem_dataurl)
                 .then(function (resp) {
                     return resp.json();
@@ -32,7 +35,6 @@
                         spiderfyOnMaxZoom: false
                     });
 
-                    getProblemStatusArray(status_dataurl);
 
                     var geojsonMarkerOptions = {
                         radius: 8,
@@ -42,32 +44,42 @@
                         opacity: 1,
                         fillOpacity: 0.8
                     };
+                    var myLayer = L.geoJSON().addTo(map);
+                    getRoadProblemByStatus(1, myLayer);
 
                     var geoJsonLayer = L.geoJson(data, {
                         pointToLayer: function (feature, latlng) {
-                            marker = L.circleMarker(latlng, geojsonMarkerOptions);
+                            marker = L.circleMarker(latlng);
                             marker.on('click', getProblemDetailsOnMarkerClick);
                             return marker;
                         }
                     });
 
+
+
+                    geoJsonLayer.setStyle(geojsonMarkerOptions)
                     markers.addLayer(geoJsonLayer);
-                    map.addLayer(markers);
+                    //map.addLayer(markers);
+                    map.addLayer(myLayer);
+
 
                 });
         });
 
-        function getProblemStatusArray(url){
-            fetch(url.toString())
+        function addProblemLayersWithControlOnMap(map){
+
+
+        }
+
+       function getRoadProblemByStatus(status_id, leaflet_layer) {
+            fetch(problem_dataurl+'?'+new URLSearchParams({
+                status: status_id.toString(),
+            }))
                 .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
-                    var result = [];
-                    console.log(data);
-                    for (i in data){
-                        console.log(data[i].name.toString());
-                    }
+                   leaflet_layer.addData(data);
                 });
         }
 
