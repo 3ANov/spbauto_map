@@ -20,7 +20,34 @@
         window.addEventListener("map:init", function (event) {
             var map = event.detail.map;
 
-            var geojsonMarkerOptions = {
+            addProblemLayersWithControlOnMap(map);
+        });
+
+       async function addProblemLayersWithControlOnMap(map) {
+
+            fetch(status_dataurl)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+
+                    var layer_array = [];
+                    // переделать слои (у тебя всё добавляется на один слой)
+                    for (var i in data){
+                        var new_layer = new L.geoJSON().addTo(map);
+                        layer_array.push(new_layer);
+                        console.log(status.color);
+                        getRoadProblemByStatus(data[i].id, data[i].color, layer_array[i]);
+
+                    }
+                    console.log(layer_array);
+                });
+
+
+        }
+
+        async function getRoadProblemByStatus(status_id, color, leaflet_layer) {
+           var geojsonMarkerOptions = {
                 radius: 8,
                 fillColor: "#ff7800",
                 color: "#000",
@@ -28,45 +55,26 @@
                 opacity: 1,
                 fillOpacity: 0.8
             };
-            var layer_array = [];
-            fetch(status_dataurl)
+
+            fetch(problem_dataurl + '?' + new URLSearchParams({
+                status: status_id.toString(),
+            }))
                 .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(data);
-                    // переделать слои (у тебя всё добавляется на один слой)
-                    for (var status of data){
-                        console.log(status.color);
-                        fetch(problem_dataurl + '?' + new URLSearchParams({
-                            status: status.id,
-                        }))
-                            .then((response) => {
-                                return response.json();
-                            })
-                            .then((data) => {
-                                var new_layer = new L.geoJson(data, {
-                                    pointToLayer: function (feature, latlng) {
-                                        marker = L.circleMarker(latlng);
-                                        marker.on('click', getProblemDetailsOnMarkerClick);
-                                        return marker;
-                                    }
-                                });
-                                geojsonMarkerOptions.fillColor = status.color;
-                                console.log(geojsonMarkerOptions);
-
-                                new_layer.setStyle(geojsonMarkerOptions);
-                                new_layer.addTo(map);
-                                layer_array.push(new_layer);
-                            });
-                    }
-
-                    console.log(layer_array);
-
+                    var geoJsonLayer = new L.geoJson(data, {
+                        pointToLayer: function (feature, latlng) {
+                            marker = L.circleMarker(latlng);
+                            marker.on('click', getProblemDetailsOnMarkerClick);
+                            return marker;
+                        }
+                    });
+                    geojsonMarkerOptions.fillColor = color
+                    geoJsonLayer.setStyle(geojsonMarkerOptions);
+                    leaflet_layer.addLayer(geoJsonLayer);
                 });
-
-        });
-
+        }
 
         function getProblemDetailsOnMarkerClick(e) {
             fetch('api/problem_detail/' + e.target.feature.id.toString())
