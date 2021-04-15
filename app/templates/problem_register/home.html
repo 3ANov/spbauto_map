@@ -31,16 +31,19 @@
                 })
                 .then((data) => {
 
-                    var layer_array = [];
+                    var layer_array = {};
                     // переделать слои (у тебя всё добавляется на один слой)
                     for (var i in data){
                         var new_layer = new L.geoJSON().addTo(map);
-                        layer_array.push(new_layer);
+                        status_name = data[i].name;
+                        layer_array[status_name] = new_layer;
                         console.log(status.color);
-                        getRoadProblemByStatus(data[i].id, data[i].color, layer_array[i]);
+                        getRoadProblemByStatus(data[i].id, data[i].color, layer_array[status_name]);
+
 
                     }
                     console.log(layer_array);
+                    L.control.layers(layer_array).addTo(map);
                 });
 
 
