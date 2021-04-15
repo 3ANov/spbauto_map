@@ -26,8 +26,6 @@
 
         async function addProblemLayersWithControlOnMap(map) {
 
-
-
             var styleForPoints = {
                 radius: 8,
                 fillColor: "#ff7800",
@@ -46,7 +44,7 @@
                             return response.json();
                         })
                         .then((problem_data) => {
-                            var layer_array = {};
+                            control = L.control.layers();
                             var layer_group = new L.layerGroup();
                             for (var status of status_data) {
                                 styleForPoints.fillColor = status.color;
@@ -60,11 +58,11 @@
                                         return (feature.properties.status === status.id);
                                     }
                                 }).setStyle(styleForPoints);
-                                layer_array[status.name] = geoJsonLayer;
                                 layer_group.addLayer(geoJsonLayer);
+                                control.addOverlay(geoJsonLayer, status.name);
                             }
-                            L.control.layers(null, layer_array).addTo(map);
 
+                            control.addTo(map);
                             mcgLayerSupportGroup = L.markerClusterGroup.layerSupport();
                             mcgLayerSupportGroup.addTo(map);
 
