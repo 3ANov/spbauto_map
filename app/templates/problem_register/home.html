@@ -20,68 +20,53 @@
         window.addEventListener("map:init", function (event) {
             var map = event.detail.map;
 
-
-
-
-            fetch(problem_dataurl)
-                .then(function (resp) {
-                    return resp.json();
-                })
-                .then(function (data) {
-
-                    var markers = new L.MarkerClusterGroup({
-                        maxClusterRadius: 60,
-                        disableClusteringAtZoom: 17,
-                        spiderfyOnMaxZoom: false
-                    });
-
-
-                    var geojsonMarkerOptions = {
-                        radius: 8,
-                        fillColor: "#ff7800",
-                        color: "#000",
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                    };
-                    var myLayer = L.geoJSON().addTo(map);
-                    getRoadProblemByStatus(1, myLayer);
-
-                    var geoJsonLayer = L.geoJson(data, {
-                        pointToLayer: function (feature, latlng) {
-                            marker = L.circleMarker(latlng);
-                            marker.on('click', getProblemDetailsOnMarkerClick);
-                            return marker;
-                        }
-                    });
-
-
-
-                    geoJsonLayer.setStyle(geojsonMarkerOptions)
-                    markers.addLayer(geoJsonLayer);
-                    //map.addLayer(markers);
-                    map.addLayer(myLayer);
-
-
-                });
-        });
-
-        function addProblemLayersWithControlOnMap(map){
-
-
-        }
-
-       function getRoadProblemByStatus(status_id, leaflet_layer) {
-            fetch(problem_dataurl+'?'+new URLSearchParams({
-                status: status_id.toString(),
-            }))
+            var geojsonMarkerOptions = {
+                radius: 8,
+                fillColor: "#ff7800",
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            };
+            var layer_array = [];
+            fetch(status_dataurl)
                 .then((response) => {
                     return response.json();
                 })
                 .then((data) => {
-                   leaflet_layer.addData(data);
+                    console.log(data);
+                    // переделать слои (у тебя всё добавляется на один слой)
+                    for (var status of data){
+                        console.log(status.color);
+                        fetch(problem_dataurl + '?' + new URLSearchParams({
+                            status: status.id,
+                        }))
+                            .then((response) => {
+                                return response.json();
+                            })
+                            .then((data) => {
+                                var new_layer = new L.geoJson(data, {
+                                    pointToLayer: function (feature, latlng) {
+                                        marker = L.circleMarker(latlng);
+                                        marker.on('click', getProblemDetailsOnMarkerClick);
+                                        return marker;
+                                    }
+                                });
+                                geojsonMarkerOptions.fillColor = status.color;
+                                console.log(geojsonMarkerOptions);
+
+                                new_layer.setStyle(geojsonMarkerOptions);
+                                new_layer.addTo(map);
+                                layer_array.push(new_layer);
+                            });
+                    }
+
+                    console.log(layer_array);
+
                 });
-        }
+
+        });
+
 
         function getProblemDetailsOnMarkerClick(e) {
             fetch('api/problem_detail/' + e.target.feature.id.toString())
