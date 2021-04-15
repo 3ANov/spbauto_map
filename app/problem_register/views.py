@@ -46,9 +46,7 @@ class StatusViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProblemLabelGeoJsonViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProblemLabel.objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
     serializer_class = ProblemLabelGeoSerializer
-    filterset_fields = ('status',)
 
 
 class ProblemLabelDetailAPIView(generics.RetrieveAPIView):

@@ -22,10 +22,6 @@ class ProblemLabelFilter(django_filters.FilterSet):
     road = django_filters.CharFilter(field_name='road__name',
                                      lookup_expr='icontains',
                                      label='Улица')
-    '''                              
-    road = django_filters.ModelChoiceFilter(queryset=Road.objects.all(),
-                                     label='Улица')
-    '''
 
     id = django_filters.NumberFilter(field_name='id', min_value=1, label='Номер проблемы')
 

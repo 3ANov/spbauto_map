@@ -14,7 +14,7 @@ class ProblemLabelGeoSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = ProblemLabel
         geo_field = 'geom'
-        fields = ['id']
+        fields = ['id', 'status']
 
 
 class ProblemLabelDetailSerializer(serializers.ModelSerializer):
