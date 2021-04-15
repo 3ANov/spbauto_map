@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css"
           href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster.layersupport@2.0.1/dist/leaflet.markercluster.layersupport.js"></script>
     <script type="text/javascript">
         var problem_dataurl = 'api/problems_set/';
         var status_dataurl = 'api/status_set/';
@@ -24,6 +25,9 @@
         });
 
         async function addProblemLayersWithControlOnMap(map) {
+
+
+
             var styleForPoints = {
                 radius: 8,
                 fillColor: "#ff7800",
@@ -43,7 +47,7 @@
                         })
                         .then((problem_data) => {
                             var layer_array = {};
-
+                            var layer_group = new L.layerGroup();
                             for (var status of status_data) {
                                 styleForPoints.fillColor = status.color;
                                 var geoJsonLayer = new L.geoJson(problem_data, {
@@ -55,11 +59,17 @@
                                     filter: function (feature) {
                                         return (feature.properties.status === status.id);
                                     }
-                                }).setStyle(styleForPoints).addTo(map);
+                                }).setStyle(styleForPoints);
                                 layer_array[status.name] = geoJsonLayer;
+                                layer_group.addLayer(geoJsonLayer);
                             }
-
                             L.control.layers(null, layer_array).addTo(map);
+
+                            mcgLayerSupportGroup = L.markerClusterGroup.layerSupport();
+                            mcgLayerSupportGroup.addTo(map);
+
+                            mcgLayerSupportGroup.checkIn(layer_group);
+                            layer_group.addTo(map);
                         })
                 });
         }
