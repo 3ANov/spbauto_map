@@ -209,8 +209,23 @@ LEAFLET_CONFIG = {
     'DEFAULT_ZOOM': 10,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
-    'RESET_VIEW': False
+    'RESET_VIEW': False,
+    'PLUGINS': {
+        'leaflet.markercluster@1.4.1': {
+            'css': ['https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css',
+                    'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css'],
+            'js': 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js',
+            'auto-include': True,
+        },
+        'leaflet.markercluster.layersupport@2.0.1': {
+                    'js': 'https://unpkg.com/leaflet.markercluster.layersupport@2.0.1/dist/leaflet.markercluster.layersupport.js',
+                    'auto-include': True,
+                },
+    }
 }
+
+
+
 
 DJANGO_TABLES2_PAGE_RANGE = 8
 

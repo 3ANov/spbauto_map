@@ -6,13 +6,9 @@
 {% block extrahead %}
     <title>{{ sitesettings.title }} | Создать заявку</title>
     {% load leaflet_tags %}
-    {% leaflet_js plugins="forms" %}
-    {% leaflet_css plugins="forms" %}
+    {% leaflet_js plugins="ALL" %}
+    {% leaflet_css plugins="ALL" %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/report.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
-    <link rel="stylesheet" type="text/css"
-          href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script type="text/javascript">
         var problem_dataurl = 'api/problems_set/';
         var status_dataurl = 'api/status_set/';
