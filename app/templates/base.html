@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"/>
     <script src="https://kit.fontawesome.com/05850b7323.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="http://spbauto.org/d/718661/t/favicon.png">
-    <meta name="description" content="{{ sitesettings.seo_description }}"/>
+    <meta name="description" content="{{ site_settings.seo_description }}"/>
     {% block extrahead %}
     {% endblock extrahead %}
 </head>
@@ -59,7 +59,7 @@
 
         </div>
         <div class="col-sm-6 mx-auto">
-            <h1 class="main-title text-uppercase">{{ sitesettings.title }}</h1>
+            <h1 class="main-title text-uppercase">{{ site_settings.title }}</h1>
         </div>
     </div>
     <div class="row pt-3 pb-3">
@@ -81,8 +81,8 @@
                 <div class="row">
                     <div class="col">
 	     		<span class="social-icons">
-            {% for sociallink in sitesettings.sociallink_set.all %}
-                <a href="{{ sociallink.link }}"><i class="{{ sociallink.icon }}"></i></a>
+            {% for social_link in site_social_link %}
+                <a href="{{ social_link.link }}"><i class="{{ social_link.icon }}"></i></a>
             {% endfor %}
 	     		</span>
                     </div>
@@ -91,19 +91,19 @@
             <div class="col-sm-4-auto text-center mx-auto">
                 <div class="row">
                     <div class="col">
-                        {{ sitesettings.address|linebreaksbr }}
+                        {{ site_settings.address|linebreaksbr }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         Телефон:&nbsp;<a
-                            href="tel:{{ sitesettings.telephone_number }}">{{ sitesettings.telephone_number }}</a>
+                            href="tel:{{ site_settings.telephone_number }}">{{ site_settings.telephone_number }}</a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         E-mail:&nbsp;<a
-                            href="mailto:{{ sitesettings.contact_email }}">{{ sitesettings.contact_email }}</a>
+                            href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>
                     </div>
                 </div>
             </div>
