@@ -35,6 +35,12 @@ class ProblemLabel(models.Model):
 
     def save(self, *args, **kwargs):
         super(ProblemLabel, self).save(*args, **kwargs)
-        from problem_register.tasks import add_places_task
-        transaction.on_commit(lambda: add_places_task.delay(self.id))
+
+        """ Проверка необходимости выполнения геокодирования """
+        if self.county is None and \
+                self.place is None and \
+                self.state_district is None and \
+                self.road is None:
+            from problem_register.tasks import add_places_task
+            transaction.on_commit(lambda: add_places_task.delay(self.id))
 
