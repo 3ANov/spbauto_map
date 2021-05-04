@@ -10,19 +10,16 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apk add --no-cache \
             --upgrade \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
         postgresql-client \
         libpq \
     && apk add --no-cache \
                --upgrade \
-               --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
                --virtual .build-deps \
         postgresql-dev \
         zlib-dev jpeg-dev \
         alpine-sdk \
     && apk add --no-cache \
                --upgrade \
-               --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         geos \
         proj \
         gdal \

@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'bootstrap4',
     'leaflet',
-    'djgeojson',
     'copyright',
     'django_tables2',
     'site_settings',
@@ -56,6 +55,8 @@ INSTALLED_APPS = [
     'places',
     'captcha',
     'social_django',
+    'rest_framework',
+    'rest_framework_gis',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,8 @@ DATABASES = {
          'PORT': os.environ.get('DB_PORT', '5432'),
     },
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cache
 
@@ -207,8 +210,21 @@ LEAFLET_CONFIG = {
     'DEFAULT_ZOOM': 10,
     'MIN_ZOOM': 3,
     'MAX_ZOOM': 18,
-    'RESET_VIEW': False
+    'RESET_VIEW': False,
+    'PLUGINS': {
+        'leaflet.markercluster@1.4.1': {
+            'css': ['https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css',
+                    'https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css'],
+            'js': 'https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js',
+            'auto-include': True,
+        },
+        'leaflet.markercluster.layersupport@2.0.1': {
+                    'js': 'https://unpkg.com/leaflet.markercluster.layersupport@2.0.1/dist/leaflet.markercluster.layersupport.js',
+                    'auto-include': True,
+                },
+    }
 }
+
 
 DJANGO_TABLES2_PAGE_RANGE = 8
 
@@ -236,3 +252,14 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
 REVERSE_GEOCODING_API_URL = 'https://eu1.locationiq.com/v1/reverse.php'
 REVERSE_GEOCODING_API_KEY = os.environ.get('REVERSE_GEOCODING_API_KEY')
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/minute',
+        'user': '120/minute'
+    }
+}

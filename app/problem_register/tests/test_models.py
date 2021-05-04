@@ -2,7 +2,7 @@ from django.contrib.gis.geos import Point
 from django.test import TestCase
 from django.utils import timezone
 
-from problem_register.models import ProblemLabel, Status
+from problem_register.models import ProblemLabel, ProblemStatus
 
 
 class NewProblemReportTest(TestCase):
@@ -32,9 +32,9 @@ class NewStatusReportTest(TestCase):
 
     def setUp(self):
         """добавление в базу"""
-        Status.objects.create(name='Новый статус')
+        ProblemStatus.objects.create(name='Новый статус')
 
     def test_get_status(self):
         """тест: существует ли статус с таким именем"""
-        status_set = Status.objects.filter(name='Новый статус')
+        status_set = ProblemStatus.objects.filter(name='Новый статус')
         self.assertEqual(status_set.count(), 1)

@@ -1,17 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.serializers import serialize
-from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from django.views.generic import CreateView, DetailView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 
-# Create your views here.
-from main.celery import debug_task
+
+from rest_framework import viewsets, generics
+
 from problem_register.filters import ProblemLabelFilter
 from problem_register.forms import ProblemLabelForm
-from problem_register.models import ProblemLabel, Status
+from problem_register.models import ProblemLabel, ProblemStatus
+from problem_register.serializers import StatusSerializer, ProblemLabelGeoSerializer, ProblemLabelDetailSerializer
 from problem_register.tables import ProblemsTable
-from problem_register.tasks import add_places_task
 
 
 class ReportView(LoginRequiredMixin, CreateView):
@@ -23,19 +25,8 @@ class ReportView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.status, _ = Status.objects.get_or_create(name='Новая')
+        form.instance.status, _ = ProblemStatus.objects.get_or_create(name='Новая')
         return super(ReportView, self).form_valid(form)
-
-
-def problems_dataset(request):
-    data = serialize('geojson', ProblemLabel.objects.all(), fields=('geom', 'description',
-                                                                    'created_date', 'pk', 'status'))
-    return HttpResponse(data, content_type="json")
-
-
-def status_dataset(request):
-    data = serialize('json', Status.objects.all())
-    return HttpResponse(data, content_type="json")
 
 
 class ProblemsListView(SingleTableMixin, FilterView):
@@ -50,3 +41,17 @@ class ProblemDetailView(DetailView):
     model = ProblemLabel
     template_name = "problem_register/problem_details.html"
 
+
+class StatusViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProblemStatus.objects.all()
+    serializer_class = StatusSerializer
+
+
+class ProblemLabelGeoJsonViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = ProblemLabelGeoSerializer
+    queryset = ProblemLabel.objects.all()
+
+
+class ProblemLabelDetailAPIView(generics.RetrieveAPIView):
+    queryset = ProblemLabel.objects.all()
+    serializer_class = ProblemLabelDetailSerializer

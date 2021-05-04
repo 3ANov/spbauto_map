@@ -1,11 +1,11 @@
 import django_filters
 
-from problem_register.models import Status, ProblemLabel
+from problem_register.models import ProblemStatus, ProblemLabel
 
 
 class ProblemLabelFilter(django_filters.FilterSet):
     """ Фильтр для модели дорожной проблемы """
-    status = django_filters.ModelChoiceFilter(queryset=Status.objects.all())
+    status = django_filters.ModelChoiceFilter(queryset=ProblemStatus.objects.all())
 
     state_district = django_filters.CharFilter(field_name='state_district__name',
                                                lookup_expr='icontains',
@@ -22,10 +22,6 @@ class ProblemLabelFilter(django_filters.FilterSet):
     road = django_filters.CharFilter(field_name='road__name',
                                      lookup_expr='icontains',
                                      label='Улица')
-    '''                              
-    road = django_filters.ModelChoiceFilter(queryset=Road.objects.all(),
-                                     label='Улица')
-    '''
 
     id = django_filters.NumberFilter(field_name='id', min_value=1, label='Номер проблемы')
 
