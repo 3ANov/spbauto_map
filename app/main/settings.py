@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'bootstrap4',
     'leaflet',
-    'djgeojson',
     'copyright',
     'django_tables2',
     'site_settings',
@@ -105,6 +104,8 @@ DATABASES = {
          'PORT': os.environ.get('DB_PORT', '5432'),
     },
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cache
 
