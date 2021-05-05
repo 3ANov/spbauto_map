@@ -238,6 +238,7 @@ GEOS_LIBRARY_PATH = glob('/usr/lib/libgeos_c.so.*')[0]
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
+# Social-Auth settings
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
@@ -246,12 +247,17 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SEC
 SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_VK_OAUTH2_SECRET')
 
+# Celery settings
+
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
+# Settings for reverse geocoding (using LocationIQ python client)
 
 REVERSE_GEOCODING_API_URL = 'https://eu1.locationiq.com/v1/reverse.php'
 REVERSE_GEOCODING_API_KEY = os.environ.get('REVERSE_GEOCODING_API_KEY')
+
+# DRF settings
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [

@@ -1,7 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_cookie
 from django.views.generic import CreateView, DetailView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
@@ -30,7 +27,7 @@ class ReportView(LoginRequiredMixin, CreateView):
 
 
 class ProblemsListView(SingleTableMixin, FilterView):
-    """ View для вывода списка проблем, с различными фильтрами"""
+    """ View для вывода списка проблем, с различными фильтрами """
     table_class = ProblemsTable
     model = ProblemLabel
     template_name = "problem_register/problems_list.html"
@@ -38,20 +35,24 @@ class ProblemsListView(SingleTableMixin, FilterView):
 
 
 class ProblemDetailView(DetailView):
+    """ View для вывода подробной информации о дорожной проблеме """
     model = ProblemLabel
     template_name = "problem_register/problem_details.html"
 
 
 class StatusViewSet(viewsets.ReadOnlyModelViewSet):
+    """ DRF_ViewSet для вывода списка статусов дорожных проблем """
     queryset = ProblemStatus.objects.all()
     serializer_class = StatusSerializer
 
 
 class ProblemLabelGeoJsonViewSet(viewsets.ReadOnlyModelViewSet):
+    """ DRF_ViewSet для вывода в формате GeoJson списка проблем """
     serializer_class = ProblemLabelGeoSerializer
     queryset = ProblemLabel.objects.all()
 
 
 class ProblemLabelDetailAPIView(generics.RetrieveAPIView):
+    """ DRF_View для вывода в детальной информации о дорожной проблеме """
     queryset = ProblemLabel.objects.all()
     serializer_class = ProblemLabelDetailSerializer
