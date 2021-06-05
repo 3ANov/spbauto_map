@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def add_places_info_for_problem(problem_pk):
+    """ Добавление информации о геотегах в модель дорожной проблемы """
     problem = ProblemLabel.objects.get(pk=problem_pk)
 
     configuration = locationiq.Configuration()
