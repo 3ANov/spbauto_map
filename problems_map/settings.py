@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -96,6 +99,13 @@ DATABASES = {
     },
 }
 
+MAX_CONN_AGE = 600
+
+if "DATABASE_URL" in os.environ:
+    # Configure Django for DATABASE_URL environment variable.
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=MAX_CONN_AGE, ssl_require=True)
+    DATABASES["default"]["ENGINE"] = 'django.contrib.gis.db.backends.postgis'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -134,25 +144,25 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 LOGIN_REDIRECT_URL = '/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-
-from urllib3 import request, PoolManager
-import json
-http = PoolManager()
-r = http.request('GET', "https://mailtrap.io/api/v1/inboxes.json?api_token=4955b1ced35fd1e2f24d1b1444c0528c")
-credentials = json.loads(r.data.decode('utf-8'))[0]
-print(credentials)
-
-EMAIL_HOST = credentials['domain']
-EMAIL_HOST_USER = credentials['username']
-EMAIL_HOST_PASSWORD = credentials['password']
-EMAIL_PORT = credentials['smtp_ports'][0]
-EMAIL_USE_TLS = True
+#
+# from urllib3 import request, PoolManager
+# import json
+# http = PoolManager()
+# r = http.request('GET', "https://mailtrap.io/api/v1/inboxes.json?api_token=4955b1ced35fd1e2f24d1b1444c0528c")
+# credentials = json.loads(r.data.decode('utf-8'))[0]
+# print(credentials)
+#
+# EMAIL_HOST = credentials['domain']
+# EMAIL_HOST_USER = credentials['username']
+# EMAIL_HOST_PASSWORD = credentials['password']
+# EMAIL_PORT = credentials['smtp_ports'][0]
+# EMAIL_USE_TLS = True
 
 
 #AUTH_USER_MODEL = 'accounts.MyUser'
@@ -168,7 +178,5 @@ LEAFLET_CONFIG = {
 GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+# Enable WhiteNoise's GZip compression of static assets.
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
